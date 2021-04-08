@@ -1,0 +1,2 @@
+class LoggedExceptions(Exception):
+	pass
