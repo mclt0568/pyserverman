@@ -9,7 +9,9 @@ class ConfigControls:
 		self.template_config = {
 			"bot_token":"",
 			"server_script":"",
-			"server_args":[]
+			"server_args":[],
+			"default_server_guild":0,
+			"default_server_channel":0,
 		}
 		if not os.path.isfile(self.target):
 			with open(self.target, "w+") as f:
