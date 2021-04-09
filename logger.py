@@ -32,6 +32,10 @@ class logger:
 			messages = messages.split("\n")
 			if messages[-1] == "":
 				messages = messages[:-1]
+		elif type(messages) != list:
+			messages = str(messages).split("\n")
+			if messages[-1] == "":
+				messages = messages[:-1]
 		logs = [self.construct_message(i, logtype=logtype) for i in messages]
 		if logtype == "exception":
 			logs = [self.construct_message("== UNEXPECTED EXCEPTION ==",logtype="exception")] + logs + [self.construct_message("== END OF EXCEPTION ==",logtype="exception")]
