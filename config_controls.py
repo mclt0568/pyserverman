@@ -2,7 +2,7 @@ from exceptions import ConfigError
 import json
 import os
 
-class config:
+class ConfigControls:
 	def __init__(self):
 		self.target = "config.json"
 		self.current_config = {}
