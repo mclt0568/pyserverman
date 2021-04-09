@@ -3,3 +3,4 @@ import logger as l
 
 logger = l.logger()
 configs = c.ConfigControls()
+configs.read_configs()
