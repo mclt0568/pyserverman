@@ -21,5 +21,5 @@ class DiscordWrapper(discord.Client):
 		content = message.content.strip().lower()
 		if not content:
 			return
-		if content[0] == "!" and content.split(" ")[0] in self.intentions:
+		if content[0] == "[" and content.split(" ")[0][-1] == "]" and content.split(" ")[0] in self.intentions:
 			await self.intentions[content.split(" ")[0]](self,message)
