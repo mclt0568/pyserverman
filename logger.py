@@ -29,23 +29,20 @@ class logger:
             date, colorparse(color+mode+"§0")) + message
         return log_in_file, log_in_console
 
-    def write_to_file(self):
-        pass
+    def write_to_file(self,line):
+        with open(f"{self.log_directory}/{self.log_file}", "a") as f:
+                f.write(line+"\n")
 
-    def log(self, messages, logtype="log"):
-        if type(messages) == str:
-            messages = messages.split("\n")
-            if messages[-1] == "":
-                messages = messages[:-1]
-        elif type(messages) != list:
-            messages = str(messages).split("\n")
-            if messages[-1] == "":
-                messages = messages[:-1]
-        logs = [self.construct_message(i, logtype=logtype) for i in messages]
+    def log(self, message, logtype="log"):
+        message = str(message)
+        list_of_messages = message.split("\n")
+        if list_of_messages:
+            if not list_of_messages[-1]:
+                list_of_messages = list_of_messages[:-1]
+        logs = [self.construct_message(str(i), logtype=logtype) for i in list_of_messages]
         if logtype == "exception":
             logs = [self.construct_message("== UNEXPECTED EXCEPTION ==", logtype="exception")] + logs + [
                 self.construct_message("== END OF EXCEPTION ==", logtype="exception")]
         for file, console in logs:
             print(console)
-            with open(f"{self.log_directory}/{self.log_file}", "a") as f:
-                f.write(file+"\n")
+            self.write_to_file(file)
