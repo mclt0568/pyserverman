@@ -20,16 +20,25 @@ class DiscordWrapper(discord.Client):
     async def on_error(self, event, *args, **kwargs):
         logger.log(traceback.format_exc(), logtype="exception")
 
+    def is_intention(self, raw_intention: str):
+        return raw_intention[0] == "[" and raw_intention[-1] == "]" and raw_intention in self.intentions
+
     async def on_message(self, message):
-        content = message.content.strip().lower()
-        if not content:
+        raw_msg = message.content
+        msg = raw_msg.strip().lower()
+        if not msg:
             return
-        if content[0] == "[" and content.split(" ")[0][-1] == "]" and content.split(" ")[0] in self.intentions:
+
+        msg_pieces = msg.split(" ")
+
+        if self.is_intention(msg_pieces[0]):
             if message.author.id not in configs.current_config["default_admins"]:
                 await message.channel.send("權限不足")
                 return
+
             logger.log(
-                f"{message.author.name}#{message.author.discriminator} is trying to execute the following intention: {content.split(' ')[0]}")
+                f"{message.author.name}#{message.author.discriminator} is trying to execute the following intention: {msg_pieces[0]}")
             logger.log(f"Original message goes like:")
             logger.log(f"\t{message.content}")
-            await self.intentions[content.split(" ")[0]](self, message, message.content.split(" ")[1:])
+
+            await self.intentions[msg_pieces[0]](self, message, raw_msg.split(" ")[1:])
