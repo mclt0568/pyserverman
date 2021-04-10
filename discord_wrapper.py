@@ -2,8 +2,6 @@ from global_modules import *
 import discord
 import traceback
 
-from discord.channel import CategoryChannel
-
 
 class DiscordWrapper(discord.Client):
     intentions = {}
