@@ -45,4 +45,9 @@ class logger:
                 self.construct_message("== END OF EXCEPTION ==", logtype="exception")]
         for file, console in logs:
             print(console)
+<<<<<<< HEAD
             self.write_to_file(file)
+=======
+            with open(f"{self.log_directory}/{self.log_file}", "a", encoding="utf8") as f:
+                f.write(file+"\n")
+>>>>>>> b7b97659a3167738b0d0a57035ab52f4a9d82ccc
