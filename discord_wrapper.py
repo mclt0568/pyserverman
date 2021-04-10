@@ -19,5 +19,7 @@ class DiscordWrapper(discord.Client):
 		logger.log(traceback.format_exc(),logtype="exception")
 	async def on_message(self,message):
 		content = message.content.strip().lower()
-		if content in self.intentions:
+		if not content:
+			return
+		if content[0] == "!" and content.split(" ")[0] in self.intentions:
 			await self.intentions[content](self,message)
