@@ -1,4 +1,3 @@
-from re import T
 from global_modules import *
 import generate_embeds
 import discord
