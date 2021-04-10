@@ -26,3 +26,10 @@ class ConfigControls:
 	def write_configs(self):
 		with open(self.target, "w+") as f:
 			json.dump(self.current_config, f)
+	def add_admin(self,user_id):
+		self.current_config["default_admins"].append(user_id)
+		self.write_configs()
+	def remove_admin(self,user_id):
+		if user_id in self.current_config["default_admins"]:
+			self.current_config["default_admins"].remove(user_id)
+			self.write_configs()
