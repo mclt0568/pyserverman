@@ -22,4 +22,4 @@ class DiscordWrapper(discord.Client):
 		if not content:
 			return
 		if content[0] == "!" and content.split(" ")[0] in self.intentions:
-			await self.intentions[content](self,message)
+			await self.intentions[content.split(" ")[0]](self,message)
