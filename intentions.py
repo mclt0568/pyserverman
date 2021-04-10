@@ -3,7 +3,7 @@ import generate_embeds
 import discord
 
 
-@discord_client.register_intentions("[add-admin]")
+@discord_client.intention("[add-admin]")
 async def add_admin(client: discord.Client, message: discord.Message, args: str):
     if not message.mentions:
         await message.channel.send(
@@ -26,7 +26,7 @@ async def add_admin(client: discord.Client, message: discord.Message, args: str)
     )
 
 
-@discord_client.register_intentions("[remove-admin]")
+@discord_client.intention("[remove-admin]")
 async def remove_admin(client: discord.Client, message: discord.Message, args: str):
     if not message.mentions:
         await message.channel.send(

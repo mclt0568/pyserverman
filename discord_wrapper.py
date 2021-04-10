@@ -1,3 +1,4 @@
+from typing import Callable, Dict
 from logger import LogLevelName
 from global_modules import *
 import discord
@@ -5,13 +6,15 @@ import traceback
 
 
 class DiscordWrapper(discord.Client):
-    intentions = {}
+    intentions: Dict[str, Callable] = {}
 
-    def register_intentions(self, trigger):
-        def wrapper(function):
-            self.intentions[trigger] = function
-            return function
+    def intention(self, trigger: str) -> None:
+        def wrapper(func: Callable):
+            self.register_intention(trigger, func)
         return wrapper
+
+    def register_intention(self, trigger: str, handler: Callable):
+        self.intentions[trigger] = handler
 
     async def on_ready(self):
         logger.log(f"Signed in as {self.user}")
