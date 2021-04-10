@@ -30,7 +30,7 @@ class logger:
         return log_in_file, log_in_console
 
     def write_to_file(self,line):
-        with open(f"{self.log_directory}/{self.log_file}", "a") as f:
+        with open(f"{self.log_directory}/{self.log_file}", "a", encoding="utf8") as f:
                 f.write(line+"\n")
 
     def log(self, message, logtype="log"):
