@@ -27,5 +27,5 @@ class DiscordWrapper(discord.Client):
 				return
 			logger.log(f"{message.author.name}#{message.author.discriminator} is trying to execute the following intention: {content.split(' ')[0]}")
 			logger.log(f"Original message goes like:")
-			logger.log(f"\t {message.content}")
+			logger.log(f"\t{message.content}")
 			await self.intentions[content.split(" ")[0]](self,message,message.content.split(" ")[1:])
