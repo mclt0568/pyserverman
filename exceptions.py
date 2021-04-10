@@ -1,10 +1,13 @@
-class LoggedExceptions(Exception):
+from logger import LogLevelName
+
+
+class LoggedException(Exception):
     def __init__(self, message, logger=None):
         self.message = message
         if logger:
-            logger.log(message, logtype="error")
+            logger.log(message, level=LogLevelName.EXCEPTION)
         super().__init__(self.message)
 
 
-class ConfigError(LoggedExceptions):
+class ConfigError(LoggedException):
     pass

@@ -1,3 +1,4 @@
+from logger import LogLevelName
 from global_modules import *
 import discord
 import traceback
@@ -16,7 +17,7 @@ class DiscordWrapper(discord.Client):
         logger.log(f"Signed in as {self.user}")
 
     async def on_error(self, event, *args, **kwargs):
-        logger.log(traceback.format_exc(), logtype="exception")
+        logger.log(traceback.format_exc(), level=LogLevelName.EXCEPTION)
 
     def is_intention(self, raw_intention: str):
         return raw_intention[0] == "[" and raw_intention[-1] == "]" and raw_intention in self.intentions

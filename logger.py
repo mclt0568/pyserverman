@@ -1,7 +1,25 @@
-from typing import IO
+from typing import Any, Dict, IO, Union
 from ColorStr import parse as colorparse
 import datetime
 import os
+from enum import Enum
+import threading
+
+
+class LogLevel:
+    tag: str
+    color: str
+
+    def __init__(self, tag: str, color: str) -> None:
+        self.tag = tag
+        self.color = color
+
+
+class LogLevelName(Enum):
+    LOG = "log"
+    ERROR = "error"
+    EXCEPTION = "exception"
+    WARNING = "warning"
 
 
 class Logger:
@@ -11,7 +29,10 @@ class Logger:
     line_prefix: str
     line_suffix: str
 
+    log_levels: Dict[str, LogLevel]
+
     log_file: IO
+    log_file_lock: threading.Lock
 
     def __init__(self) -> None:
         self.log_directory = "logs"
@@ -23,42 +44,66 @@ class Logger:
         self.prefix = "[{}][{}] "
         self.suffix = "\n"
 
-        self.modes = {
-            "log": ["LOG", "§g"],
-            "error": ["ERR", "§r"],
-            "exception": ["EXC", "§r"],
-            "warning": ["WRN", "§y"],
+        self.log_levels = {
+            LogLevelName.LOG: LogLevel("LOG", "§g"),
+            LogLevelName.ERROR: LogLevel("ERR", "§r"),
+            LogLevelName.EXCEPTION: LogLevel("EXC", "§r"),
+            LogLevelName.WARNING: LogLevel("WRN", "§y"),
         }
+        self.default_log_level = self.log_levels[LogLevelName.LOG]
 
-        self.log_file = open(f"{self.log_directory}/{self.log_filename}", "w+").close()
-    
+        self.log_file = open(
+            f"{self.log_directory}/{self.log_filename}", "w+", encoding="utf8")
+        self.log_file_lock = threading.Lock()
+
     def __del__(self) -> None:
         self.log_file.close()
 
-    def construct_message(self, message, logtype="log"):
-        mode = self.modes[logtype][0] if logtype in self.modes else "LOG"
-        color = self.modes[logtype][1] if logtype in self.modes else "§g"
-        date = datetime.datetime.today().strftime("%Y/%m/%d %H:%M:%S")
-        log_in_file = self.prefix.format(date, mode) + message
-        log_in_console = self.prefix.format(
-            date, colorparse(color+mode+"§0")) + message
-        return log_in_file, log_in_console
+    def construct_message(self, message: str, level="") -> None:
+        log_level = self.log_levels[level] if level and level in self.log_levels else self.default_log_level
+        log_level_tag = log_level.tag
+        log_level_color = log_level.color
 
-    def write_to_file(self, line):
-        with open(f"{self.log_directory}/{self.log_filename}", "a", encoding="utf8") as f:
-            f.write(line+"\n")
+        date_time = datetime.datetime.today().strftime("%Y/%m/%d %H:%M:%S")
 
-    def log(self, message, logtype="log"):
-        message = str(message)
-        list_of_messages = message.split("\n")
-        if list_of_messages:
-            if not list_of_messages[-1]:
-                list_of_messages = list_of_messages[:-1]
-        logs = [self.construct_message(str(i), logtype=logtype)
-                for i in list_of_messages]
-        if logtype == "exception":
-            logs = [self.construct_message("== UNEXPECTED EXCEPTION ==", logtype="exception")] + logs + [
-                self.construct_message("== END OF EXCEPTION ==", logtype="exception")]
-        for file, console in logs:
-            print(console)
-            self.write_to_file(file)
+        file_message = self.prefix.format(date_time, log_level_tag) + message
+        console_message = self.prefix.format(
+            date_time, colorparse(log_level_color + log_level_tag + "§0")) + message
+
+        return file_message, console_message
+
+    # flush will update the log file
+    # set it to false when writing frequently
+    def write_to_file(self, line: str, flush: bool = True) -> None:
+        with self.log_file_lock:
+            self.log_file.write(line + "\n")
+            if flush:
+                self.flush_file()
+
+    def flush_file(self) -> None:
+        with self.log_file_lock:
+            self.log_file.flush()
+
+    def log(self, raw_message: Any, level="") -> None:
+        message = str(raw_message)
+
+        message_lines = message.split("\n")
+        if message_lines and not message_lines[-1]:
+            del message_lines[-1]
+
+        log_messages = [self.construct_message(line, level=level)
+                        for line in message_lines]
+        if level == LogLevelName.EXCEPTION:
+            log_messages = [
+                self.construct_message(
+                    "== UNEXPECTED EXCEPTION ==", level=LogLevelName.EXCEPTION),
+                *log_messages,
+                self.construct_message(
+                    "==== END OF EXCEPTION ====", level=LogLevelName.EXCEPTION)
+            ]
+
+        for file_message, console_message in log_messages:
+            print(console_message)
+            self.write_to_file(file_message, flush=False)
+
+        self.flush_file()
