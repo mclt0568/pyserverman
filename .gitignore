@@ -3,3 +3,4 @@ config.json
 tester.py
 env/
 .vscode/
+__pycache__/
