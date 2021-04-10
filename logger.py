@@ -1,12 +1,24 @@
+from typing import IO
 from ColorStr import parse as colorparse
 import datetime
 import os
 
 
 class Logger:
-    def __init__(self):
+    log_directory: str
+    log_filename: str
+
+    line_prefix: str
+    line_suffix: str
+
+    log_file: IO
+
+    def __init__(self) -> None:
         self.log_directory = "logs"
         self.log_filename = datetime.datetime.now().strftime("%d-%m-%Y_%H-%M-%S.log")
+
+        if not os.path.isdir(self.log_directory):
+            os.mkdir(self.log_directory)
 
         self.prefix = "[{}][{}] "
         self.suffix = "\n"
@@ -18,10 +30,10 @@ class Logger:
             "warning": ["WRN", "§y"],
         }
 
-        if not os.path.isdir(self.log_directory):
-            os.mkdir(self.log_directory)
-
-        open(f"{self.log_directory}/{self.log_filename}", "w+").close()
+        self.log_file = open(f"{self.log_directory}/{self.log_filename}", "w+").close()
+    
+    def __del__(self) -> None:
+        self.log_file.close()
 
     def construct_message(self, message, logtype="log"):
         mode = self.modes[logtype][0] if logtype in self.modes else "LOG"
