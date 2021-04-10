@@ -6,7 +6,7 @@ class logger:
 	def __init__(self):
 		self.log_directory = "logs"
 		today = datetime.datetime.now()
-		self.log_file = today.strftime("%d-%m-%Y_%H:%M:%S") + ".log"
+		self.log_file = today.strftime("%d-%m-%Y_%H-%M-%S") + ".log"
 		self.suffix = "\n"
 		self.prefix = "[{0}][{1}] "
 		self.modes = {
