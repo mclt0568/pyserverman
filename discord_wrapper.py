@@ -22,4 +22,10 @@ class DiscordWrapper(discord.Client):
 		if not content:
 			return
 		if content[0] == "[" and content.split(" ")[0][-1] == "]" and content.split(" ")[0] in self.intentions:
+			if message.author.id not in configs.current_config["default_admins"]:
+				await message.channel.send("權限不足")
+				return
+			logger.log(f"{message.author.name}#{message.author.discriminator} is trying to execute the following intention: {content.split(' ')[0]}")
+			logger.log(f"Original message goes like:")
+			logger.log(f"\t {message.content}")
 			await self.intentions[content.split(" ")[0]](self,message)
