@@ -12,6 +12,7 @@ class ConfigControls:
 			"server_args":[],
 			"default_server_guild":0,
 			"default_server_channel":0,
+			"default_admins":[]
 		}
 		if not os.path.isfile(self.target):
 			with open(self.target, "w+") as f:
