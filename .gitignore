@@ -1,3 +1,5 @@
 logs/
 config.json
 tester.py
+env/
+.vscode/
