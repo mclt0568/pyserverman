@@ -1,7 +1,7 @@
 import config_controls as c
 import logger as l
 
-logger = l.logger()
+logger = l.Logger()
 configs = c.ConfigControls()
 configs.read_configs()
 

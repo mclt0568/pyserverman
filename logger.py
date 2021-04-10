@@ -3,7 +3,7 @@ import datetime
 import os
 
 
-class logger:
+class Logger:
     def __init__(self):
         self.log_directory = "logs"
         today = datetime.datetime.now()
