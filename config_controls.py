@@ -15,7 +15,7 @@ class ConfigControls:
 		}
 		if not os.path.isfile(self.target):
 			with open(self.target, "w+") as f:
-				json.dump(self.template_config,f)
+				json.dump(self.template_config,f,indent=4)
 	def read_configs(self):
 		if not os.path.isfile(self.target):
 			raise ConfigError(f"Config file at {self.target} not found.")
