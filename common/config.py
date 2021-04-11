@@ -8,7 +8,7 @@ class Config:
     config: Dict[str, Any]
     config_filename: str
 
-    config_file: IO
+    # config_file: IO
     config_file_lock: threading.Lock
 
     def __init__(self) -> None:
@@ -31,28 +31,22 @@ class Config:
 
         self.config_file_lock = threading.Lock()
         if not os.path.isfile(self.config_filename):
-            self.config_file = open(
-                self.config_filename, "w+", encoding="utf8")
-            self.save_config()
+            open(self.config_filename, "w+", encoding="utf8").close()
         else:
-            self.config_file = open(
-                self.config_filename, "r+", encoding="utf8")
             self.sync_config()
-
-    def __del__(self):
-        self.config_file.close()
 
     def __getitem__(self, key: str) -> Any:
         return self.config[key]
 
     def sync_config(self) -> None:
         with self.config_file_lock:
-            self.config = json.load(self.config_file)
+            with open(self.config_filename, "r", encoding="utf8") as config_file:
+                self.config = json.load(config_file)
 
     def save_config(self) -> None:
         with self.config_file_lock:
-            json.dump(self.config, self.config_file, indent=4)
-            self.config_file.flush()
+            with open(self.config_filename, "w+", encoding="utf8") as config_file:
+                json.dump(self.config, config_file, indent=4)
 
     def add_admin(self, user_id: str, save: bool = True) -> None:
         self.config["admins"].append(user_id)
