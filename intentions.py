@@ -1,13 +1,12 @@
 from constants import *
 import dc
-import common
 
 
 @bot.intention("[add-admin]")
 async def add_admin(ctx: dc.Context):
     if not ctx.message.mentions:
         await ctx.message.channel.send(
-            embed=common.ErrorEmbed(
+            embed=dc.ErrorEmbed(
                 "Argument Error",
                 "No mantions found.",
                 "Syntax: [add-admin] @user_1 @user_2 .. @user_n",
@@ -68,5 +67,5 @@ async def get_user_id(ctx: dc.Context):
         username_id_s[user.name] = str(user.id)
 
     await ctx.message.channel.send(
-        embed=common.DictEmbed(username_id_s)
+        embed=dc.DictEmbed(username_id_s)
     )
