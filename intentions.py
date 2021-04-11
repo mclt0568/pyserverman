@@ -73,6 +73,25 @@ async def get_user_id(ctx: dc.Context):
         embed=dc.DictEmbed(username_id_s)
     )
 
+@bot.intention("[list-admins]", require_admin=False)
+async def list_admins(ctx: dc.Context):
+    """Retrieve list of admins"""
+    admin_ids = [int(i) for i in ctx.bot.config["admins"]]
+
+    if not admin_ids:
+        await ctx.message.channel.send(
+            embed=dc.StringEmbed("The admin list is empty.\nPlease add at least 1 user's user ID in config.json as the first admin.\nID should be in string.")
+        )
+        return
+
+    admin_names = []
+    for i in admin_ids:
+        admin = await ctx.bot.fetch_user(int(i))
+        admin_names.append(admin.name)
+    
+    await ctx.message.channel.send(
+        embed=dc.ListEmbed("List of admins", admin_names)
+    )
 
 @bot.intention("[list-servers]")
 async def list_servers(ctx: dc.Context):
