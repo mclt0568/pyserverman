@@ -1,4 +1,5 @@
 from typing import Callable
+from dc import embeds
 import dc
 import discord
 import traceback
@@ -50,7 +51,9 @@ class Bot(discord.Client):
 
             handler = self.intention_handlers[msg_pieces[0]]
             if handler.require_admin and str(message.author.id) not in self.config["admins"]:
-                await message.channel.send("權限不足")
+                await message.channel.send(
+                    embed=embeds.ErrorEmbed("Permission Denied","This action or intention requires admin privilege.","Use [list-admins] to see a list of admins",message)
+                )
                 return
 
             await handler(dc.Context(self, message, raw_msg_pieces))
