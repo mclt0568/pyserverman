@@ -1,11 +1,15 @@
-from typing import Callable, Dict
+from typing import Callable
 import dc
 import discord
 import traceback
 import common
 import shlex
 
+
 class Bot(discord.Client):
+    config: common.Config
+    logger: common.Logger
+
     intention_handlers = {}
 
     def __init__(self, config: common.Config, logger: common.Logger):
