@@ -1,5 +1,7 @@
+from common.logging import LogLevel, LogLevelName
 from typing import Callable
 from dc import embeds
+import asyncio
 import dc
 import discord
 import traceback
@@ -13,11 +15,35 @@ class Bot(discord.Client):
 
     intention_handlers = {}
 
+    default_guild: discord.Guild
+    default_channel: discord.TextChannel
+
     def __init__(self, config: common.Config, logger: common.Logger):
         super().__init__()
 
         self.config = config
         self.logger = logger
+
+        self.default_guild = None
+        self.default_channel = None
+    async def initialize_default_guild_channel(self):
+        #get guild
+        self.default_guild = self.get_guild(self.config["bot"]["guild"])
+        if self.default_guild:
+            self.logger.log(f"Bound to guild: {self.default_guild}")
+        else:
+            self.logger.log("Unable to find guild. (Wrong ID might be set in config.json)",level=LogLevelName.WARNING)
+
+        #get channel
+        channels = self.get_all_channels()
+        self.default_channel = None
+        for i in channels:
+            if type(i) == discord.channel.TextChannel and i.id == self.config["bot"]["channel"]:
+                self.default_channel = i
+        if self.default_channel:
+            self.logger.log(f"Bound to channel: {self.default_channel}")
+        else:
+            self.logger.log("Unable to find channel. (Wrong ID might be set in config.json)\nAborting bounded guild.",level=LogLevelName.WARNING)
 
     def intention(self, trigger: str, require_admin: bool = True) -> None:
         def wrapper(func: Callable):
@@ -29,6 +55,14 @@ class Bot(discord.Client):
 
     async def on_ready(self):
         self.logger.log(f"Signed in as {self.user}")
+        if self.config["bot"]["guild"] and self.config["bot"]["channel"]:
+            await self.initialize_default_guild_channel()
+        else:
+            self.logger.log("Default guild and channel has not set in config.json.\nIt is recommended to bind the bot to a channel", level=LogLevelName.WARNING)
+        if self.default_channel:
+            await self.default_channel.send(
+                embed=embeds.EmptySuccessEmbed("伺服娘登場",f"成功登入爲 {self.user}")
+            )
 
     async def on_error(self, event, *args, **kwargs):
         self.logger.log(traceback.format_exc(),
