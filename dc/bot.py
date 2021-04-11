@@ -1,12 +1,12 @@
 from typing import Callable, Dict
+import dc
 import discord
 import traceback
 import common
-import dc
 
 
 class Bot(discord.Client):
-    intentions: Dict[str, dc.Handler] = {}
+    intention_handlers: Dict[str, dc.Handler] = {}
 
     def __init__(self, config: common.Config, logger: common.Logger):
         super().__init__()
@@ -14,13 +14,13 @@ class Bot(discord.Client):
         self.config = config
         self.logger = logger
 
-    def intention(self, trigger: str, require_admin: bool=True) -> None:
+    def intention(self, trigger: str, require_admin: bool = True) -> None:
         def wrapper(func: Callable):
             self.register_intention(trigger, func, require_admin)
         return wrapper
 
     def register_intention(self, trigger: str, handler: Callable, require_admin: bool):
-        self.intentions[trigger] = dc.Handler(handler, require_admin)
+        self.intention_handlers[trigger] = dc.Handler(handler, require_admin)
 
     async def on_ready(self):
         self.logger.log(f"Signed in as {self.user}")
@@ -30,7 +30,7 @@ class Bot(discord.Client):
                         level=common.LogLevelName.EXCEPTION)
 
     def is_intention(self, raw_intention: str):
-        return raw_intention[0] == "[" and raw_intention[-1] == "]" and raw_intention in self.intentions
+        return raw_intention[0] == "[" and raw_intention[-1] == "]" and raw_intention in self.intention_handlers
 
     async def on_message(self, message: discord.Message) -> None:
         raw_msg = message.content.strip()
@@ -49,4 +49,4 @@ class Bot(discord.Client):
                 await message.channel.send("權限不足")
                 return
 
-            await self.intentions[msg_pieces[0]](dc.Context(self, message, raw_msg_pieces))
+            await self.intention_handlers[msg_pieces[0]](dc.Context(self, message, raw_msg_pieces))
