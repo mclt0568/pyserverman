@@ -6,7 +6,7 @@ import dc
 
 
 class Bot(discord.Client):
-    intentions: Dict[str, Callable] = {}
+    intentions: Dict[str, dc.Handler] = {}
 
     def __init__(self, config: common.Config, logger: common.Logger):
         super().__init__()
@@ -14,13 +14,13 @@ class Bot(discord.Client):
         self.config = config
         self.logger = logger
 
-    def intention(self, trigger: str) -> None:
+    def intention(self, trigger: str, require_admin: bool=True) -> None:
         def wrapper(func: Callable):
-            self.register_intention(trigger, func)
+            self.register_intention(trigger, func, require_admin)
         return wrapper
 
-    def register_intention(self, trigger: str, handler: Callable):
-        self.intentions[trigger] = handler
+    def register_intention(self, trigger: str, handler: Callable, require_admin: bool):
+        self.intentions[trigger] = dc.Handler(handler, require_admin)
 
     async def on_ready(self):
         self.logger.log(f"Signed in as {self.user}")
