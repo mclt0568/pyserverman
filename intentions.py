@@ -66,7 +66,7 @@ async def get_user_id(ctx: dc.Context):
 
     for user in ctx.message.mentions:
         username_id_s[user.name] = str(user.id)
-    
+
     await ctx.message.channel.send(
         embed=common.DictEmbed(username_id_s)
     )

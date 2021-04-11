@@ -44,7 +44,7 @@ class DictEmbed(discord.Embed):
             title=f"指令結果",
             color=discord.Color.from_rgb(129, 199, 132)
         )
-        
+
         for key, value in dict.items():
             self.add_field(
                 name=key,
