@@ -65,8 +65,18 @@ class Bot(discord.Client):
             )
 
     async def on_error(self, event, *args, **kwargs):
-        self.logger.log(traceback.format_exc(),
+        traceback_message = traceback.format_exc()
+        self.logger.log(traceback_message,
                         level=common.LogLevelName.EXCEPTION)
+        print(traceback_message.split("\n"))
+        if self.default_channel:
+            await self.default_channel.send(
+                embed=embeds.ExceptionEmbed(
+                    traceback_message.split("\n")[-2],
+                    event,
+                    traceback_message
+                )
+            )
 
     def is_intention(self, raw_intention: str):
         return raw_intention[0] == "[" and raw_intention[-1] == "]" and raw_intention in self.intention_handlers
