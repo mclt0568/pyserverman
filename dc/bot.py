@@ -6,7 +6,7 @@ import common
 
 
 class Bot(discord.Client):
-    intention_handlers: Dict[str, dc.Handler] = {}
+    intention_handlers: Dict = {}
 
     def __init__(self, config: common.Config, logger: common.Logger):
         super().__init__()
