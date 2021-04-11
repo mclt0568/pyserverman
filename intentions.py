@@ -19,7 +19,7 @@ async def add_admin(ctx: dc.Context):
     for user in ctx.message.mentions:
         config.add_admin(str(user.id))
     await ctx.message.channel.send(
-        embed=common.SuccessEmbed(
+        embed=dc.SuccessEmbed(
             "Successfuly added user(s) to admin group",
             targets=user_names
         )
@@ -30,7 +30,7 @@ async def add_admin(ctx: dc.Context):
 async def remove_admin(ctx: dc.Context):
     if not ctx.message.mentions:
         await ctx.message.channel.send(
-            embed=common.ErrorEmbed(
+            embed=dc.ErrorEmbed(
                 "Argument Error",
                 "No mantions found.",
                 "Syntax: [remove-admin] @user_1 @user_2 .. @user_n",
@@ -42,7 +42,7 @@ async def remove_admin(ctx: dc.Context):
     for user in ctx.message.mentions:
         config.remove_admin(str(user.id))
     await ctx.message.channel.send(
-        embed=common.SuccessEmbed(
+        embed=dc.SuccessEmbed(
             "Successfuly added user(s) to admin group",
             targets=user_names
         )
@@ -53,7 +53,7 @@ async def remove_admin(ctx: dc.Context):
 async def get_user_id(ctx: dc.Context):
     if not ctx.message.mentions:
         await ctx.message.channel.send(
-            embed=common.ErrorEmbed(
+            embed=dc.ErrorEmbed(
                 "Argument Error",
                 "No mantions found.",
                 "Syntax: [get-user-id] @user_1 @user_2 .. @user_n",
