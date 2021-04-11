@@ -51,3 +51,16 @@ class DictEmbed(discord.Embed):
                 value=value,
                 inline=False
             )
+
+
+class ListEmbed(discord.Embed):
+    def __init__(self, list: List[str]):
+        super().__init__(
+            title="指令結果",
+            color=discord.Color.from_rgb(129, 199, 132)
+        )
+
+        self.add_field(
+            name="伺服器列表",
+            value="\n".join(list)
+        )
