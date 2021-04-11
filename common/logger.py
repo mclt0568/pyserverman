@@ -53,7 +53,10 @@ class Logger:
         self.default_log_level = self.log_levels[LogLevelName.LOG]
 
         self.log_file = open(
-            f"{self.log_directory}/{self.log_filename}", "a+", encoding="utf8")
+            f"{self.log_directory}/{self.log_filename}",
+            "a+",
+            encoding="utf8"
+        )
         self.log_file_lock = threading.Lock()
 
     def __del__(self) -> None:
