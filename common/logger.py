@@ -61,8 +61,8 @@ class Logger:
 
     def construct_message(self, message: str, level="") -> None:
         if level and level in self.log_levels:
-            log_level = self.log_levels[level] 
-        else: 
+            log_level = self.log_levels[level]
+        else:
             log_level = self.default_log_level
         log_level_tag = log_level.tag
         log_level_color = log_level.color
