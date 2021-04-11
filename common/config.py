@@ -49,7 +49,8 @@ class Config:
                 json.dump(self.config, config_file, indent=4)
 
     def add_admin(self, user_id: str, save: bool = True) -> None:
-        self.config["admins"].append(user_id)
+        if user_id not in self.config["admins"]:
+            self.config["admins"].append(user_id)
         if save:
             self.save_config()
 
