@@ -22,6 +22,19 @@ class ErrorEmbed(discord.Embed):
             inline=False
         )
 
+class ExceptionEmbed(discord.Embed):
+    def __init__(self, exception_name: str, event: str, full_traceback: str) -> None:
+        super().__init__(
+            title=f"發生不可預期的異常: {exception_name}",
+            description=f"在執行 {event} 事件時發生不可預期的異常\n請聯繫管理員",
+            color=discord.Color.from_rgb(229, 115, 115)
+        )
+        self.add_field(
+            name="Full Traceback",
+            value=f"```{full_traceback}```",
+            inline=False
+        )
+
 class EmptySuccessEmbed(discord.Embed):
     def __init__(self, title, description):
         super().__init__(
