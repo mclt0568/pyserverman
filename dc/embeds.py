@@ -1,5 +1,6 @@
 from typing import Dict, List
 import discord
+from discord.enums import _is_descriptor
 
 
 class ErrorEmbed(discord.Embed):
@@ -52,6 +53,20 @@ class DictEmbed(discord.Embed):
                 inline=False
             )
 
+class StringEmbed(discord.Embed):
+    def __init__(self, string):
+        super().__init__(
+            title=f"指令結果",
+            color=discord.Color.from_rgb(129, 199, 132),
+            description=string
+        )
+
+        for key, value in dict.items():
+            self.add_field(
+                name=key,
+                value=value,
+                inline=False
+            )
 
 class ListEmbed(discord.Embed):
     def __init__(self, name: str, list: List[str]):
