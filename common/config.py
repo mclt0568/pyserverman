@@ -18,12 +18,12 @@ class Config:
                 "guild": 0,
                 "channel": 0
             },
-            "server_directory":"",
+            "servers_dir": "",
             "servers": [
                 {
-                    "server_name":"",
-                    "server_script":"",
-                    "server_arguments":"",
+                    "name": "",
+                    "script": "",
+                    "args": "",
                 }
             ],
             "admins": []
