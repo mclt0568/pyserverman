@@ -72,6 +72,8 @@ class Bot(discord.Client):
         return raw_intention[0] == "[" and raw_intention[-1] == "]" and raw_intention in self.intention_handlers
 
     async def on_message(self, message: discord.Message) -> None:
+        if self.default_channel and message.channel.id != self.default_channel.id:
+            return
         raw_msg = message.content.strip()
         if not raw_msg:
             return
