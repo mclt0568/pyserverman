@@ -1,3 +1,4 @@
+from dc import embeds
 from constants import *
 import dc
 
@@ -73,6 +74,7 @@ async def get_user_id(ctx: dc.Context):
         embed=dc.DictEmbed(username_id_s)
     )
 
+
 @bot.intention("[list-admins]", require_admin=False)
 async def list_admins(ctx: dc.Context):
     """Retrieve list of admins"""
@@ -93,6 +95,7 @@ async def list_admins(ctx: dc.Context):
         embed=dc.ListEmbed("List of admins", admin_names)
     )
 
+
 @bot.intention("[list-servers]")
 async def list_servers(ctx: dc.Context):
     """List all server(s)"""
@@ -103,4 +106,15 @@ async def list_servers(ctx: dc.Context):
 
     await ctx.message.channel.send(
         embed=dc.ListEmbed("伺服器列表", server_names)
+    )
+
+
+@bot.intention("[help]")
+async def command_help(ctx: dc.Context):
+    """Show help message"""
+    embed = dc.EmptySuccessEmbed("Intentions' Help", "Type [intention_name] arg_1 arg_2 ... arg_n to execute an intention")
+    for intention_name, intention_handler in ctx.bot.intention_handlers.items():
+        embed.add_field(name=intention_name,value=intention_handler.func.__doc__,inline=False)
+    await ctx.message.channel.send(
+        embed = embed
     )
