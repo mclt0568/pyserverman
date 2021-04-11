@@ -10,5 +10,5 @@ class Handler:
         self.func = func
         self.require_admin = require_admin
 
-    def __call__(self, ctx: dc.Context) -> None:
+    def __call__(self, ctx) -> None:
         self.func(ctx)
