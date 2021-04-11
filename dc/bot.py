@@ -37,9 +37,8 @@ class Bot(discord.Client):
         if not raw_msg:
             return
         msg = raw_msg.lower()
-
-        raw_msg_pieces = shlex.spilt(raw_msg)
-        msg_pieces = shlex.spilt(msg)
+        raw_msg_pieces = shlex.split(raw_msg)
+        msg_pieces = shlex.split(msg)
 
         if self.is_intention(msg_pieces[0]):
             self.logger.log(
