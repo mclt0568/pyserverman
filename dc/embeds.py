@@ -22,6 +22,13 @@ class ErrorEmbed(discord.Embed):
             inline=False
         )
 
+class EmptySuccessEmbed(discord.Embed):
+    def __init__(self, title, description):
+        super().__init__(
+            title=title,
+            color=discord.Color.from_rgb(129, 199, 132),
+            description=description
+        )
 
 class SuccessEmbed(discord.Embed):
     def __init__(self, description: str, targets: List[str] = None) -> None:
