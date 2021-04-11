@@ -1,23 +1,23 @@
 from constants import *
-import discord
+import dc
 import common
 
 @bot.intention("[add-admin]")
-async def add_admin(client: discord.Client, message: discord.Message, args: str):
-    if not message.mentions:
-        await message.channel.send(
+async def add_admin(ctx: dc.Context):
+    if not ctx.message.mentions:
+        await ctx.message.channel.send(
             embed=common.ErrorEmbed(
                 "Argument Error",
                 "No mantions found.",
                 "Syntax: [add-admin] @user_1 @user_2 .. @user_n",
-                message
+                ctx.message
             )
         )
         return
-    user_names = [i.name for i in message.mentions]
-    for user in message.mentions:
+    user_names = [i.name for i in ctx.message.mentions]
+    for user in ctx.message.mentions:
         config.add_admin(user.id)
-    await message.channel.send(
+    await ctx.message.channel.send(
         embed=common.SuccessEmbed(
             "Successfuly added user(s) to admin group",
             targets=user_names
@@ -26,21 +26,21 @@ async def add_admin(client: discord.Client, message: discord.Message, args: str)
 
 
 @bot.intention("[remove-admin]")
-async def remove_admin(client: discord.Client, message: discord.Message, args: str):
-    if not message.mentions:
-        await message.channel.send(
+async def remove_admin(ctx: dc.Context):
+    if not ctx.message.mentions:
+        await ctx.message.channel.send(
             embed=common.ErrorEmbed(
                 "Argument Error",
                 "No mantions found.",
                 "Syntax: [remove-admin] @user_1 @user_2 .. @user_n",
-                message
+                ctx.message
             )
         )
         return
-    user_names = [i.name for i in message.mentions]
-    for user in message.mentions:
+    user_names = [i.name for i in ctx.message.mentions]
+    for user in ctx.message.mentions:
         config.remove_admin(user.id)
-    await message.channel.send(
+    await ctx.message.channel.send(
         embed=common.SuccessEmbed(
             "Successfuly added user(s) to admin group",
             targets=user_names

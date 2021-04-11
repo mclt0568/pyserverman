@@ -1,6 +1,7 @@
 import common
+import dc
 
 config = common.Config()
 logger = common.Logger()
 
-bot = common.DiscordWrapper(config, logger)
+bot = dc.Bot(config, logger)
