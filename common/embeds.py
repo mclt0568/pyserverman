@@ -1,4 +1,4 @@
-from typing import List
+from typing import Dict, List
 import discord
 
 
@@ -34,5 +34,20 @@ class SuccessEmbed(discord.Embed):
             self.add_field(
                 name="對象",
                 value="\n".join(targets),
+                inline=False
+            )
+
+
+class DictEmbed(discord.Embed):
+    def __init__(self, dict: Dict[str, str]):
+        super().__init__(
+            title=f"指令結果",
+            color=discord.Color.from_rgb(129, 199, 132)
+        )
+        
+        for key, value in dict:
+            self.add_field(
+                name=key,
+                value=value,
                 inline=False
             )
