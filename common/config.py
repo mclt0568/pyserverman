@@ -18,10 +18,13 @@ class Config:
                 "guild": 0,
                 "channel": 0
             },
-            "server": {
-                "script": "",
-                "args": [],
-            },
+            "servers": [
+                {
+                    "directory": "",
+                    "jar_name": "",
+                    "args": []
+                }
+            ],
             "admins": []
         }
         self.config_filename = "config.json"
