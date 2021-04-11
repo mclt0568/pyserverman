@@ -1,9 +1,8 @@
-from global_modules import *
-import tester
-import sys
+from constants import *
+import bot
+
+def main():
+    bot.start(config["bot"]["token"])
 
 if __name__ == "__main__":
-
-    # TESTS
-    if "--test" in sys.argv or "-t" in sys.argv:
-        tester.test_main(sys.argv)
+    main()

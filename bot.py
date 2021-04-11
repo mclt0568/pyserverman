@@ -1,13 +1,12 @@
-from global_modules import *
-import generate_embeds
+from constants import *
 import discord
+import common
 
-
-@discord_client.intention("[add-admin]")
+@bot.intention("[add-admin]")
 async def add_admin(client: discord.Client, message: discord.Message, args: str):
     if not message.mentions:
         await message.channel.send(
-            embed=generate_embeds.generate_error(
+            embed=common.generate_error(
                 "Argument Error",
                 "No mantions found.",
                 "Syntax: [add-admin] @user_1 @user_2 .. @user_n",
@@ -19,18 +18,18 @@ async def add_admin(client: discord.Client, message: discord.Message, args: str)
     for user in message.mentions:
         config.add_admin(user.id)
     await message.channel.send(
-        embed=generate_embeds.generate_success(
+        embed=common.generate_success(
             "Successfuly added user(s) to admin group",
             targets=user_names
         )
     )
 
 
-@discord_client.intention("[remove-admin]")
+@bot.intention("[remove-admin]")
 async def remove_admin(client: discord.Client, message: discord.Message, args: str):
     if not message.mentions:
         await message.channel.send(
-            embed=generate_embeds.generate_error(
+            embed=common.generate_error(
                 "Argument Error",
                 "No mantions found.",
                 "Syntax: [remove-admin] @user_1 @user_2 .. @user_n",
@@ -42,8 +41,12 @@ async def remove_admin(client: discord.Client, message: discord.Message, args: s
     for user in message.mentions:
         config.remove_admin(user.id)
     await message.channel.send(
-        embed=generate_embeds.generate_success(
+        embed=common.generate_success(
             "Successfuly added user(s) to admin group",
             targets=user_names
         )
     )
+
+
+def start(token: str):
+    bot.run(token)

@@ -1,4 +1,4 @@
-from logger import LogLevelName
+from .logger import LogLevelName
 
 
 class LoggedException(Exception):

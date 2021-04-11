@@ -1,8 +1,8 @@
-from typing import Any, Dict, IO, Union
+from typing import Any, Dict, IO
 from ColorStr import parse as colorparse
+from enum import Enum
 import datetime
 import os
-from enum import Enum
 import threading
 
 

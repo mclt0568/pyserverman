@@ -1,12 +1,18 @@
 from typing import Callable, Dict
-from logger import LogLevelName
-from global_modules import *
 import discord
 import traceback
+
+from . import logger, config
+from .logger import LogLevelName
 
 
 class DiscordWrapper(discord.Client):
     intentions: Dict[str, Callable] = {}
+    
+    def __init__(self, config: config.Config, logger: logger.Logger, *, loop=None, **options):
+        self.config = config
+        self.logger = logger
+        super().__init__(loop=loop, **options)
 
     def intention(self, trigger: str) -> None:
         def wrapper(func: Callable):
@@ -17,10 +23,10 @@ class DiscordWrapper(discord.Client):
         self.intentions[trigger] = handler
 
     async def on_ready(self):
-        logger.log(f"Signed in as {self.user}")
+        self.logger.log(f"Signed in as {self.user}")
 
     async def on_error(self, event, *args, **kwargs):
-        logger.log(traceback.format_exc(), level=LogLevelName.EXCEPTION)
+        self.logger.log(traceback.format_exc(), level=LogLevelName.EXCEPTION)
 
     def is_intention(self, raw_intention: str):
         return raw_intention[0] == "[" and raw_intention[-1] == "]" and raw_intention in self.intentions
@@ -34,10 +40,10 @@ class DiscordWrapper(discord.Client):
         msg_pieces = msg.split(" ")
 
         if self.is_intention(msg_pieces[0]):
-            logger.log(
+            self.logger.log(
                 f"{message.author.name}#{message.author.discriminator} is trying to execute the following intention: {msg_pieces[0]}")
-            logger.log(f"Original message goes like:")
-            logger.log(f"\t{message.content}")
+            self.logger.log(f"Original message goes like:")
+            self.logger.log(f"\t{message.content}")
 
             if message.author.id not in config["admins"]:
                 await message.channel.send("權限不足")

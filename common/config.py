@@ -1,5 +1,4 @@
 from typing import Any, Dict, IO
-from exceptions import ConfigError
 import json
 import os
 import threading
@@ -29,12 +28,14 @@ class Config:
 
         self.config_file_lock = threading.Lock()
         if not os.path.isfile(self.config_filename):
-            self.config_file = open(self.config_filename, "w+", encoding="utf8")
+            self.config_file = open(
+                self.config_filename, "w+", encoding="utf8")
             self.save_config()
         else:
-            self.config_file = open(self.config_filename, "r+", encoding="utf8")
+            self.config_file = open(
+                self.config_filename, "r+", encoding="utf8")
             self.sync_config()
-    
+
     def __del__(self):
         self.config_file.close()
 
@@ -50,12 +51,12 @@ class Config:
             json.dump(self.config, self.config_file, indent=4)
             self.config_file.flush()
 
-    def add_admin(self, user_id, save: bool=True) -> None:
+    def add_admin(self, user_id, save: bool = True) -> None:
         self.config["admins"].append(user_id)
         if save:
             self.save_config()
 
-    def remove_admin(self, user_id, save: bool=True) -> None:
+    def remove_admin(self, user_id, save: bool = True) -> None:
         if user_id in self.config["admins"]:
             self.config["admins"].remove(user_id)
             if save:
