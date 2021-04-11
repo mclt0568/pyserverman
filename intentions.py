@@ -4,6 +4,7 @@ import dc
 
 @bot.intention("[add-admin]")
 async def add_admin(ctx: dc.Context):
+    """Add user(s) to the admin list"""
     if not ctx.message.mentions:
         await ctx.message.channel.send(
             embed=dc.ErrorEmbed(
@@ -27,6 +28,7 @@ async def add_admin(ctx: dc.Context):
 
 @bot.intention("[remove-admin]")
 async def remove_admin(ctx: dc.Context):
+    """Remove user(s) from the admin list"""
     if not ctx.message.mentions:
         await ctx.message.channel.send(
             embed=dc.ErrorEmbed(
@@ -48,8 +50,10 @@ async def remove_admin(ctx: dc.Context):
     )
 
 
+
 @bot.intention("[get-user-id]", require_admin=False)
 async def get_user_id(ctx: dc.Context):
+    """Retrieve the user id for user(s)"""
     if not ctx.message.mentions:
         await ctx.message.channel.send(
             embed=dc.ErrorEmbed(
