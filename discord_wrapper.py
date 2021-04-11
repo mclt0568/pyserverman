@@ -39,7 +39,7 @@ class DiscordWrapper(discord.Client):
             logger.log(f"Original message goes like:")
             logger.log(f"\t{message.content}")
 
-            if message.author.id not in configs.current_config["default_admins"]:
+            if message.author.id not in config["admins"]:
                 await message.channel.send("權限不足")
                 return
 

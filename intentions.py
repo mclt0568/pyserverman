@@ -17,7 +17,7 @@ async def add_admin(client: discord.Client, message: discord.Message, args: str)
         return
     user_names = [i.name for i in message.mentions]
     for user in message.mentions:
-        configs.add_admin(user.id)
+        config.add_admin(user.id)
     await message.channel.send(
         embed=generate_embeds.generate_success(
             "Successfuly added user(s) to admin group",
@@ -40,7 +40,7 @@ async def remove_admin(client: discord.Client, message: discord.Message, args: s
         return
     user_names = [i.name for i in message.mentions]
     for user in message.mentions:
-        configs.remove_admin(user.id)
+        config.remove_admin(user.id)
     await message.channel.send(
         embed=generate_embeds.generate_success(
             "Successfuly added user(s) to admin group",
