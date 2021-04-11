@@ -1,8 +1,9 @@
 from constants import *
-import bot
+import intentions
 
 def main():
-    bot.start(config["bot"]["token"])
+    bot.run(config["bot"]["token"])
+    
 
 if __name__ == "__main__":
     main()

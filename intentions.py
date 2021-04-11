@@ -70,7 +70,3 @@ async def get_user_id(ctx: dc.Context):
     await ctx.message.channel.send(
         embed=common.DictEmbed(username_id_s)
     )
-
-
-def start(token: str):
-    bot.run(token)
