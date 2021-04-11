@@ -9,10 +9,11 @@ from .logger import LogLevelName
 class DiscordWrapper(discord.Client):
     intentions: Dict[str, Callable] = {}
     
-    def __init__(self, config: config.Config, logger: logger.Logger, *, loop=None, **options):
+    def __init__(self, config: config.Config, logger: logger.Logger):
+        super().__init__()
+        
         self.config = config
         self.logger = logger
-        super().__init__(loop=loop, **options)
 
     def intention(self, trigger: str) -> None:
         def wrapper(func: Callable):
