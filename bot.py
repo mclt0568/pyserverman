@@ -6,7 +6,7 @@ import common
 async def add_admin(client: discord.Client, message: discord.Message, args: str):
     if not message.mentions:
         await message.channel.send(
-            embed=common.generate_error(
+            embed=common.ErrorEmbed(
                 "Argument Error",
                 "No mantions found.",
                 "Syntax: [add-admin] @user_1 @user_2 .. @user_n",
@@ -18,7 +18,7 @@ async def add_admin(client: discord.Client, message: discord.Message, args: str)
     for user in message.mentions:
         config.add_admin(user.id)
     await message.channel.send(
-        embed=common.generate_success(
+        embed=common.SuccessEmbed(
             "Successfuly added user(s) to admin group",
             targets=user_names
         )
@@ -29,7 +29,7 @@ async def add_admin(client: discord.Client, message: discord.Message, args: str)
 async def remove_admin(client: discord.Client, message: discord.Message, args: str):
     if not message.mentions:
         await message.channel.send(
-            embed=common.generate_error(
+            embed=common.ErrorEmbed(
                 "Argument Error",
                 "No mantions found.",
                 "Syntax: [remove-admin] @user_1 @user_2 .. @user_n",
@@ -41,7 +41,7 @@ async def remove_admin(client: discord.Client, message: discord.Message, args: s
     for user in message.mentions:
         config.remove_admin(user.id)
     await message.channel.send(
-        embed=common.generate_success(
+        embed=common.SuccessEmbed(
             "Successfuly added user(s) to admin group",
             targets=user_names
         )
