@@ -53,6 +53,7 @@ class DictEmbed(discord.Embed):
                 inline=False
             )
 
+
 class StringEmbed(discord.Embed):
     def __init__(self, string):
         super().__init__(
@@ -67,6 +68,7 @@ class StringEmbed(discord.Embed):
                 value=value,
                 inline=False
             )
+
 
 class ListEmbed(discord.Embed):
     def __init__(self, name: str, list: List[str]):
