@@ -62,13 +62,6 @@ class StringEmbed(discord.Embed):
             description=string
         )
 
-        for key, value in dict.items():
-            self.add_field(
-                name=key,
-                value=value,
-                inline=False
-            )
-
 
 class ListEmbed(discord.Embed):
     def __init__(self, name: str, list: List[str]):
