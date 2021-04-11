@@ -3,7 +3,7 @@ import dc
 import discord
 import traceback
 import common
-
+import shlex
 
 class Bot(discord.Client):
     intention_handlers = {}
@@ -38,8 +38,8 @@ class Bot(discord.Client):
             return
         msg = raw_msg.lower()
 
-        raw_msg_pieces = raw_msg.split(" ")
-        msg_pieces = msg.split(" ")
+        raw_msg_pieces = shlex.spilt(raw_msg)
+        msg_pieces = shlex.spilt(msg)
 
         if self.is_intention(msg_pieces[0]):
             self.logger.log(
