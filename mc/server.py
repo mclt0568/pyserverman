@@ -1,5 +1,4 @@
 import subprocess
-from sys import stdout
 from typing import List, Union
 import shlex
 
