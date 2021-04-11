@@ -50,7 +50,6 @@ async def remove_admin(ctx: dc.Context):
     )
 
 
-
 @bot.intention("[get-user-id]", require_admin=False)
 async def get_user_id(ctx: dc.Context):
     """Retrieve the user id for user(s)"""
@@ -72,4 +71,17 @@ async def get_user_id(ctx: dc.Context):
 
     await ctx.message.channel.send(
         embed=dc.DictEmbed(username_id_s)
+    )
+
+
+@bot.intention("[list-servers]")
+async def list_servers(ctx: dc.Context):
+    """List all server(s)"""
+    server_dicts = config["servers"]
+    server_names = []
+    for server_dict in server_dicts:
+        server_names.append(server_dict["name"])
+
+    await ctx.message.channel.send(
+        embed=dc.ListEmbed("伺服器列表", server_names)
     )
