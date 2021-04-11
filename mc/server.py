@@ -4,11 +4,16 @@ import shlex
 
 
 class Server:
+    script: str
+
     stdout_lines: List[str]
 
-    def run(self, script: str) -> int:
+    def __init__(self, script: str) -> None:
+        self.script = script
+
+    def run(self) -> int:
         proc = subprocess.Popen(
-            shlex.split(script),
+            shlex.split(self.script),
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE
         )
