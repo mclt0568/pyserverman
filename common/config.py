@@ -23,7 +23,6 @@ class Config:
                 {
                     "name": "",
                     "script": "",
-                    "args": "",
                 }
             ],
             "admins": []
