@@ -17,7 +17,7 @@ async def add_admin(ctx: dc.Context):
         return
     user_names = [i.name for i in ctx.message.mentions]
     for user in ctx.message.mentions:
-        config.add_admin(user.id)
+        config.add_admin(str(user.id))
     await ctx.message.channel.send(
         embed=common.SuccessEmbed(
             "Successfuly added user(s) to admin group",
@@ -40,7 +40,7 @@ async def remove_admin(ctx: dc.Context):
         return
     user_names = [i.name for i in ctx.message.mentions]
     for user in ctx.message.mentions:
-        config.remove_admin(user.id)
+        config.remove_admin(str(user.id))
     await ctx.message.channel.send(
         embed=common.SuccessEmbed(
             "Successfuly added user(s) to admin group",

@@ -51,12 +51,12 @@ class Config:
             json.dump(self.config, self.config_file, indent=4)
             self.config_file.flush()
 
-    def add_admin(self, user_id, save: bool = True) -> None:
+    def add_admin(self, user_id: str, save: bool = True) -> None:
         self.config["admins"].append(user_id)
         if save:
             self.save_config()
 
-    def remove_admin(self, user_id, save: bool = True) -> None:
+    def remove_admin(self, user_id: str, save: bool = True) -> None:
         if user_id in self.config["admins"]:
             self.config["admins"].remove(user_id)
             if save:

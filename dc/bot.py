@@ -45,8 +45,9 @@ class Bot(discord.Client):
             self.logger.log(
                 f"{message.author.name}#{message.author.discriminator} executed: {raw_msg}")
 
-            if message.author.id not in self.config["admins"]:
+            handler = self.intention_handlers[msg_pieces[0]]
+            if handler.require_admin and str(message.author.id) not in self.config["admins"]:
                 await message.channel.send("權限不足")
                 return
 
-            await self.intention_handlers[msg_pieces[0]](dc.Context(self, message, raw_msg_pieces))
+            await handler(dc.Context(self, message, raw_msg_pieces))
