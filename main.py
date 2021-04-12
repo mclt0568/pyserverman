@@ -22,7 +22,7 @@ def main():
 
         constants.servers.append(server_obj)
 
-    import intentions
+    import intentions #to register all intentions
     bot.run(config["bot"]["token"])
 
     for server_obj in constants.servers:
