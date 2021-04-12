@@ -4,3 +4,4 @@ tester.py
 env/
 .vscode/
 __pycache__/
+servers/

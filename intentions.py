@@ -1,4 +1,3 @@
-from dc import embeds
 from constants import *
 import dc
 import discord
@@ -92,7 +91,7 @@ async def list_admins(ctx: dc.Context):
             #     title="The admin list is empty.",
             #     description="\nPlease add at least 1 user's user ID in config.json as the first admin.\nID should be in string."
             # )
-            embed = dc.InformationListEmbed(
+            embed=dc.InformationListEmbed(
                 title="The admin list is empty",
                 description="Please add at least 1 user's user ID in config.json as the first admin.\nID should be in string."
             )
@@ -103,7 +102,7 @@ async def list_admins(ctx: dc.Context):
     for i in admin_ids:
         admin = await ctx.bot.fetch_user(int(i))
         admin_names.append(admin.name)
-    
+
     await ctx.message.channel.send(
         embed=dc.InformationListEmbed(
             title="",
@@ -132,14 +131,16 @@ async def list_servers(ctx: dc.Context):
     )
 
 
-@bot.intention("[help]",require_admin=False)
+@bot.intention("[help]", require_admin=False)
 async def command_help(ctx: dc.Context):
     """Show help message"""
-    embed = dc.GeneralSuccessEmbed("Intentions' Help", "Type `[intention_name] arg_1 arg_2 ... arg_n` to execute an intention")
+    embed = dc.GeneralSuccessEmbed(
+        "Intentions' Help", "Type `[intention_name] arg_1 arg_2 ... arg_n` to execute an intention")
     for intention_name, intention_handler in ctx.bot.intention_handlers.items():
-        embed.add_field(name=intention_name,value=intention_handler.func.__doc__,inline=False)
+        embed.add_field(name=intention_name,
+                        value=intention_handler.func.__doc__, inline=False)
     await ctx.message.channel.send(
-        embed = embed
+        embed=embed
     )
 
 @bot.intention("[dump-log]", require_admin=True)
@@ -151,3 +152,29 @@ async def dump_log(ctx:dc.Context):
             filename="Log.txt"
         )
     )
+
+@bot.intention("[run-command]")
+async def run_command(ctx: dc.Context):
+    """Run command on target server"""
+    if len(ctx.args) < 2:
+        await ctx.message.channel.send(
+            embed=dc.ErrorEmbed(
+                "Argument Error",
+                "Missing arguments",
+                "Syntax: [run-command] <server_name> <command>",
+                ctx.message
+            )
+        )
+        return
+
+    server_name = ctx.args[0]
+
+    command_args = ctx.args[1:]
+
+    for server in servers:
+        print(server.name)
+        print(server_name)
+        if server_name == server.name:
+            server.run_command(" ".join(command_args))
+
+    await ctx.message.channel.send(embed=dc.SuccessEmbed("Command ran successfully"))

@@ -104,4 +104,4 @@ class Bot(discord.Client):
                 )
                 return
 
-            await handler(dc.Context(self, message, raw_msg_pieces))
+            await handler(dc.Context(self, message, raw_msg_pieces[1:]))
