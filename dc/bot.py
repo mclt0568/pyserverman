@@ -60,8 +60,10 @@ class Bot(discord.Client):
         else:
             self.logger.log("Default guild and channel has not set in config.json.\nIt is recommended to bind the bot to a channel", level=LogLevelName.WARNING)
         if self.default_channel:
+            nametag = embeds.BotNametagEmbed(self)
+            await nametag.init_all_fields()
             await self.default_channel.send(
-                embed=embeds.EmptySuccessEmbed("伺服娘登場",f"成功登入爲 {self.user}")
+                embed=nametag
             )
 
     async def on_error(self, event, *args, **kwargs):
