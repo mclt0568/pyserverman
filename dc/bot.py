@@ -70,7 +70,6 @@ class Bot(discord.Client):
         traceback_message = traceback.format_exc()
         self.logger.log(traceback_message,
                         level=common.LogLevelName.EXCEPTION)
-        print(traceback_message.split("\n"))
         if self.default_channel:
             await self.default_channel.send(
                 embed=embeds.ExceptionEmbed(
