@@ -1,6 +1,5 @@
 from typing import Dict, List
 import discord
-from discord.enums import _is_descriptor
 
 
 class ErrorEmbed(discord.Embed):
