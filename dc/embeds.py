@@ -47,43 +47,51 @@ class ExceptionEmbed(GeneralErrorEmbed):
 
         self._author["name"] = "An unexpected exception has occurred (Fatal):"
 
-class EmptySuccessEmbed(discord.Embed):
-    def __init__(self, title, description):
+
+class GeneralSuccessEmbed(discord.Embed):
+    def __init__(self,title,description):
         super().__init__(
             title=title,
-            color=discord.Color.from_rgb(129, 199, 132),
-            description=description
-        )
-        self.set_author(name="Command Executed Successfuly", icon_url="https://i.imgur.com/V02otDl.png")
-
-class SuccessEmbed(discord.Embed):
-    def __init__(self, description: str, targets: List[str] = None) -> None:
-        super().__init__(
-            title=f"Command Result(s)",
             description=description,
             color=discord.Color.from_rgb(129, 199, 132)
         )
 
-        self.set_author(name="Command Executed Successfuly", icon_url="https://i.imgur.com/V02otDl.png")
+        self.set_author(name="Title Name", icon_url="https://i.imgur.com/V02otDl.png")
+
+class CommandSuccessEmbed(GeneralSuccessEmbed):
+    def __init__(self, title, description):
+        super().__init__(
+            title=title,
+            description=description
+        )
+        self._author["name"] = "Command Executed Successfuly"
+
+class CommandSuccessListEmbed(GeneralSuccessEmbed):
+    def __init__(self, description: str, list_title: str, targets: List[str] = None) -> None:
+        super().__init__(
+            title=f"Command Result(s)",
+            description=description,
+        )
+
+        self._author["name"] = "Command Executed Successfuly"
 
         if targets:
             self.add_field(
-                name="Objects",
+                name=list_title,
                 value="\n".join(targets),
                 inline=False
             )
 
-
-class DictEmbed(discord.Embed):
-    def __init__(self, dict: Dict[str, str]):
+class CommandSuccessDictEmbed(GeneralSuccessEmbed):
+    def __init__(self, description: str, targets: List[str] = None) -> None:
         super().__init__(
             title=f"Command Result(s)",
-            color=discord.Color.from_rgb(129, 199, 132)
+            description=description,
         )
 
-        self.set_author(name="Command Executed Successfuly", icon_url="https://i.imgur.com/V02otDl.png")
+        self._author["name"] = "Command Executed Successfuly"
 
-        for key, value in dict.items():
+        for key, value in targets.items():
             self.add_field(
                 name=key,
                 value=value,
@@ -91,38 +99,12 @@ class DictEmbed(discord.Embed):
             )
 
 
-class StringEmbed(discord.Embed):
-    def __init__(self, string):
-        super().__init__(
-            title=f"Command Result(s)",
-            color=discord.Color.from_rgb(129, 199, 132),
-            description=string
-        )
-
-        self.set_author(name="Command Executed Successfuly", icon_url="https://i.imgur.com/V02otDl.png")
-
-
-class ListEmbed(discord.Embed):
-    def __init__(self, name: str, list: List[str]):
-        super().__init__(
-            title="Command Result(s)",
-            color=discord.Color.from_rgb(129, 199, 132)
-        )
-
-        self.add_field(
-            name=name,
-            value="\n".join(list)
-        )
-
-        self.set_author(name="Command Executed Successfuly", icon_url="https://i.imgur.com/V02otDl.png")
-
-
 class BotNametagEmbed(discord.Embed):
     def __init__(self, client:discord.Client) -> None:
         super().__init__(
             title=f"Successful Signed In!",
             description="I am now available.",
-            color=discord.Color.from_rgb(129, 199, 132)
+            color=discord.Color.from_rgb(255, 245, 157)
         )
         self.discord_client = client
     async def init_all_fields(self):

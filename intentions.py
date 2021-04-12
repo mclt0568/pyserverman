@@ -20,9 +20,10 @@ async def add_admin(ctx: dc.Context):
     for user in ctx.message.mentions:
         config.add_admin(str(user.id))
     await ctx.message.channel.send(
-        embed=dc.SuccessEmbed(
+        embed=dc.CommandSuccessListEmbed(
             "Successfuly added user(s) to admin group",
-            targets=user_names
+            targets=user_names,
+            list_title="User(s) added:"
         )
     )
 
@@ -44,9 +45,10 @@ async def remove_admin(ctx: dc.Context):
     for user in ctx.message.mentions:
         config.remove_admin(str(user.id))
     await ctx.message.channel.send(
-        embed=dc.SuccessEmbed(
+        embed=dc.CommandSuccessListEmbed(
             "Successfuly added user(s) to admin group",
-            targets=user_names
+            targets=user_names,
+            list_title="User(s) removed:"
         )
     )
 
@@ -71,7 +73,10 @@ async def get_user_id(ctx: dc.Context):
         username_id_s[user.name] = str(user.id)
 
     await ctx.message.channel.send(
-        embed=dc.DictEmbed(username_id_s)
+        embed=dc.CommandSuccessDictEmbed(
+            description="",
+            targets=username_id_s,
+        )
     )
 
 
@@ -82,7 +87,10 @@ async def list_admins(ctx: dc.Context):
 
     if not admin_ids:
         await ctx.message.channel.send(
-            embed=dc.StringEmbed("The admin list is empty.\nPlease add at least 1 user's user ID in config.json as the first admin.\nID should be in string.")
+            embed=dc.CommandSuccessEmbed(
+                title="The admin list is empty.",
+                description="\nPlease add at least 1 user's user ID in config.json as the first admin.\nID should be in string."
+            )
         )
         return
 
@@ -92,7 +100,11 @@ async def list_admins(ctx: dc.Context):
         admin_names.append(admin.name)
     
     await ctx.message.channel.send(
-        embed=dc.ListEmbed("List of admins", admin_names)
+        embed=dc.CommandSuccessListEmbed(
+            list_title="List of admins",
+            targets=admin_names,
+            description=""
+        )
     )
 
 
@@ -105,16 +117,21 @@ async def list_servers(ctx: dc.Context):
         server_names.append(server_dict["name"])
 
     await ctx.message.channel.send(
-        embed=dc.ListEmbed("伺服器列表", server_names)
+        embed=dc.CommandSuccessListEmbed(
+            description="",
+            list_title="List of server(s):",
+            targets=server_names
+        )
     )
 
 
 @bot.intention("[help]",require_admin=False)
 async def command_help(ctx: dc.Context):
     """Show help message"""
-    embed = dc.EmptySuccessEmbed("Intentions' Help", "Type [intention_name] arg_1 arg_2 ... arg_n to execute an intention")
+    embed = dc.GeneralSuccessEmbed("Intentions' Help", "Type `[intention_name] arg_1 arg_2 ... arg_n` to execute an intention")
     for intention_name, intention_handler in ctx.bot.intention_handlers.items():
         embed.add_field(name=intention_name,value=intention_handler.func.__doc__,inline=False)
     await ctx.message.channel.send(
         embed = embed
     )
+
