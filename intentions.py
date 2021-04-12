@@ -10,7 +10,7 @@ async def add_admin(ctx: dc.Context):
         await ctx.message.channel.send(
             embed=dc.ErrorEmbed(
                 "Argument Error",
-                "No mantions found.",
+                "No mentions found.",
                 "Syntax: [add-admin] @user_1 @user_2 .. @user_n",
                 ctx.message
             )
@@ -35,7 +35,7 @@ async def remove_admin(ctx: dc.Context):
         await ctx.message.channel.send(
             embed=dc.ErrorEmbed(
                 "Argument Error",
-                "No mantions found.",
+                "No mentions found.",
                 "Syntax: [remove-admin] @user_1 @user_2 .. @user_n",
                 ctx.message
             )
@@ -60,7 +60,7 @@ async def get_user_id(ctx: dc.Context):
         await ctx.message.channel.send(
             embed=dc.ErrorEmbed(
                 "Argument Error",
-                "No mantions found.",
+                "No mentions found.",
                 "Syntax: [get-user-id] @user_1 @user_2 .. @user_n",
                 ctx.message
             )
