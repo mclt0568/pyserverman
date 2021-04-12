@@ -120,13 +120,23 @@ async def list_servers(ctx: dc.Context):
     server_names = []
     for server_dict in server_dicts:
         server_names.append(server_dict["name"])
-
+    server_objects = {}
+    for server_name in server_names:
+        temp_server = None
+        for server in servers:
+            if server.name == server_name:
+                temp_server = server
+        server_objects[server_name] = temp_server
+    messages = [
+        f"[{'Running' if j.is_running() else 'Idel'}] "+str(i)
+        for i, j in server_objects.items()
+    ]
     await ctx.message.channel.send(
         embed=dc.InformationListEmbed(
             title="Query result(s)",
             description="",
             list_title="List of server(s):",
-            targets=server_names
+            targets=messages
         )
     )
 
