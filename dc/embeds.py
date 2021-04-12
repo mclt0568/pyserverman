@@ -122,6 +122,17 @@ class InformationListEmbed(GeneralInformationEmbed):
                 inline=False
             )
 
+
+class GeneralWarningEmbed(discord.Embed):
+    def __init__(self,title,description):
+        super().__init__(
+            title=title,
+            description=description,
+            color=discord.Color.from_rgb(255, 183, 77)
+        )
+
+        self.set_author(name="Warning", icon_url="https://i.imgur.com/4ASct3T.png")
+
 class BotNametagEmbed(discord.Embed):
     def __init__(self, client:discord.Client) -> None:
         super().__init__(
