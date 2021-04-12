@@ -22,6 +22,8 @@ class Server(threading.Thread):
         self.config = config
         self.logger = logger
 
+        self.server_process = None
+
     def run(self):
         self.logger.log(f"Started server: {self.name}")
         self.server_process = subprocess.Popen(
@@ -41,6 +43,8 @@ class Server(threading.Thread):
         self.server_process.stdin.flush()
 
     def is_running(self):
+        if not self.server_process:
+            return False
         stdout_line_bytes = self.server_process.stdout.readline()
         return stdout_line_bytes != b"" or self.server_process.poll() == None
 
