@@ -34,7 +34,7 @@ class Server(threading.Thread):
             while True:
                 # blocking when no content is in stdout
                 stdout_line_bytes = self.server_process.stdout.readline()
-                if stdout_line_bytes == b"" and self.server_process.poll() is None:
+                if stdout_line_bytes == b"" and self.server_process.poll() != None:
                     break
         except KeyboardInterrupt:
             self.logger.log("Received terminate signal!")
