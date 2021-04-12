@@ -63,7 +63,7 @@ class CommandSuccessEmbed(GeneralSuccessEmbed):
             title=title,
             description=description
         )
-        self._author["name"] = "Command Executed Successfuly"
+        self._author["name"] = "Command Executed Successfully"
 
 class CommandSuccessListEmbed(GeneralSuccessEmbed):
     def __init__(self, description: str, list_title: str, targets: List[str] = None) -> None:
@@ -72,7 +72,7 @@ class CommandSuccessListEmbed(GeneralSuccessEmbed):
             description=description,
         )
 
-        self._author["name"] = "Command Executed Successfuly"
+        self._author["name"] = "Command Executed Successfully"
 
         if targets:
             self.add_field(
@@ -88,7 +88,7 @@ class CommandSuccessDictEmbed(GeneralSuccessEmbed):
             description=description,
         )
 
-        self._author["name"] = "Command Executed Successfuly"
+        self._author["name"] = "Command Executed Successfully"
 
         for key, value in targets.items():
             self.add_field(
@@ -122,10 +122,21 @@ class InformationListEmbed(GeneralInformationEmbed):
                 inline=False
             )
 
+
+class GeneralWarningEmbed(discord.Embed):
+    def __init__(self,title,description):
+        super().__init__(
+            title=title,
+            description=description,
+            color=discord.Color.from_rgb(255, 183, 77)
+        )
+
+        self.set_author(name="Warning", icon_url="https://i.imgur.com/4ASct3T.png")
+
 class BotNametagEmbed(discord.Embed):
     def __init__(self, client:discord.Client) -> None:
         super().__init__(
-            title=f"Successfuly Signed In!",
+            title=f"Successfully Signed In!",
             description="I am now available.",
             color=discord.Color.from_rgb(255, 245, 157)
         )

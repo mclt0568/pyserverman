@@ -166,6 +166,22 @@ async def dump_log(ctx:dc.Context):
         )
     )
 
+@bot.intention("[start-servers]")
+async def start_server(ctx: dc.context):
+    """Start server(s)"""
+    if not ctx.args:
+        await ctx.message.channel.send(
+            embed=dc.ErrorEmbed(
+                "Argument Error",
+                "Missing arguments",
+                "Syntax: [start-servers] <server_name_1> <server_name_2> .. <server_name_n>",
+                ctx.message
+            )
+        )
+        return
+
+    server_names = config
+
 @bot.intention("[run-command]")
 async def run_command(ctx: dc.Context):
     """Run command on target server"""

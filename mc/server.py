@@ -1,9 +1,12 @@
 from common import logging
+from dc import embeds
+import constants
 import subprocess
 import shlex
 import common
 import os
 import threading
+import asyncio
 
 
 class Server(threading.Thread):
@@ -35,6 +38,15 @@ class Server(threading.Thread):
         while True:
             if not self.is_running():
                 self.logger.log(f"Server has stopped: {self.name}")
+                if constants.bot.default_channel:
+                    constants.bot.loop.create_task(
+                        constants.bot.default_channel.send(
+                            embed=embeds.GeneralInformationEmbed(
+                                title="Server has exitted",
+                                description=f"The following server: {self.name} has exitted\nThis might have caused by an in-game stop command or the server has crashed.\nYou can choose to dump the log before next execution"
+                            )
+                        )
+                    )
                 break
 
     def run_command(self, command: str):
