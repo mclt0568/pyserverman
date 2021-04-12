@@ -3,12 +3,21 @@ from discord.enums import _is_descriptor
 import discord
 import datetime
 
-class ErrorEmbed(discord.Embed):
-    def __init__(self, title: str, description: str, prompt: str, message: discord.Message) -> None:
+class GeneralErrorEmbed(discord.Embed):
+    def __init__(self,title,description):
         super().__init__(
-            title=f"{title}",
+            title=title,
             description=description,
             color=discord.Color.from_rgb(229, 115, 115)
+        )
+
+        self.set_author(name="Title Name", icon_url="https://i.imgur.com/2P3wrqJ.png")
+
+class ErrorEmbed(GeneralErrorEmbed):
+    def __init__(self, title: str, description: str, prompt: str, message: discord.Message) -> None:
+        super().__init__(
+            title=title,
+            description=description,
         )
 
         self.add_field(
@@ -22,14 +31,13 @@ class ErrorEmbed(discord.Embed):
             inline=False
         )
 
-        self.set_author(name="An user error has occurred:", icon_url="https://i.imgur.com/2P3wrqJ.png")
+        self._author["name"] = "An user error has occurred:"
 
-class ExceptionEmbed(discord.Embed):
+class ExceptionEmbed(GeneralErrorEmbed):
     def __init__(self, exception_name: str, event: str, full_traceback: str) -> None:
         super().__init__(
             title=f"{exception_name}",
             description=f"Unexpected Exception has occurred during {event}\nPlease report this to the admin with the traceback.",
-            color=discord.Color.from_rgb(229, 115, 115)
         )
         self.add_field(
             name="Full Traceback",
@@ -37,7 +45,7 @@ class ExceptionEmbed(discord.Embed):
             inline=False
         )
 
-        self.set_author(name="An Unexpected Exception has occurred (Fatal):", icon_url="https://i.imgur.com/2P3wrqJ.png")
+        self._author["name"] = "An unexpected exception has occurred (Fatal):"
 
 class EmptySuccessEmbed(discord.Embed):
     def __init__(self, title, description):
