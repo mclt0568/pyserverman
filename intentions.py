@@ -1,7 +1,8 @@
 from dc import embeds
 from constants import *
 import dc
-
+import discord
+import io
 
 @bot.intention("[add-admin]")
 async def add_admin(ctx: dc.Context):
@@ -141,3 +142,12 @@ async def command_help(ctx: dc.Context):
         embed = embed
     )
 
+@bot.intention("[dump-log]", require_admin=True)
+async def dump_log(ctx:dc.Context):
+    data = ctx.bot.logger.read_file_as_string()
+    await ctx.message.channel.send(
+        file=discord.File(
+            fp = io.StringIO(data),
+            filename="Log.txt"
+        )
+    )

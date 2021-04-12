@@ -113,3 +113,10 @@ class Logger:
             self.write_to_file(file_message, flush=False)
 
         self.flush_file()
+
+    def read_file_as_string(self) -> str:
+        with self.log_file_lock:
+            self.log_file.read()
+            self.log_file.seek(0)
+            data = self.log_file.read()
+        return data
