@@ -172,9 +172,7 @@ async def run_command(ctx: dc.Context):
     command_args = ctx.args[1:]
 
     for server in servers:
-        print(server.name)
-        print(server_name)
         if server_name == server.name:
             server.run_command(" ".join(command_args))
 
-    await ctx.message.channel.send(embed=dc.SuccessEmbed("Command ran successfully"))
+    await ctx.message.channel.send(embed=dc.CommandSuccessEmbed("", ""))
