@@ -1,5 +1,4 @@
-from typing import Dict, List
-from discord.enums import _is_descriptor
+from typing import List
 import discord
 import datetime
 

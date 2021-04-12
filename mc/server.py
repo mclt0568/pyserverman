@@ -1,27 +1,50 @@
+from common import logging
 import subprocess
-from typing import List
 import shlex
+import common
+import os
+import threading
 
 
-class Server:
+class Server(threading.Thread):
+    name: str
     script: str
+    config: common.Config
+    logger: logging.Logger
 
-    stdout_lines: List[str]
+    server_process: subprocess.Popen
 
-    def __init__(self, script: str) -> None:
+    def __init__(self, name: str, script: str, config: common.Config, logger: logging.Logger) -> None:
+        super().__init__(daemon=True)
+
+        self.name = name
         self.script = script
+        self.config = config
+        self.logger = logger
 
-    def run(self) -> int:
-        proc = subprocess.Popen(
+    def run(self):
+        self.server_process = subprocess.Popen(
             shlex.split(self.script),
             stdin=subprocess.PIPE,
-            stdout=subprocess.PIPE
+            stdout=subprocess.PIPE,
+            cwd=os.path.join(self.config["servers_dir"], self.name)
         )
 
-        while True:
-            stdout_line = proc.stdout.readline()
-            if stdout_line == "" and proc.poll() is not None:
-                break
-            self.stdout_lines.append(stdout_line)
+        try:
+            while True:
+                # blocking when no content is in stdout
+                stdout_line_bytes = self.server_process.stdout.readline()
+                if stdout_line_bytes == b"" and self.server_process.poll() is None:
+                    break
 
-        return proc.poll()
+                print(str(stdout_line_bytes))
+        except KeyboardInterrupt:
+            self.logger.log("Received terminate signal!")
+            self.logger.log("Terminating subprocesses . . . ")
+            self.server_process.terminate()
+            self.logger.log("Terminated all subprocesses!")
+
+    def run_command(self, command: str):
+        print("stdin")
+        self.server_process.stdin.write(f"{command}\r\n".encode())
+        self.server_process.stdin.flush()
