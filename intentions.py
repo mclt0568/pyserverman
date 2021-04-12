@@ -73,6 +73,7 @@ async def get_user_id(ctx: dc.Context):
         embed=dc.DictEmbed(username_id_s)
     )
 
+
 @bot.intention("[list-admins]", require_admin=False)
 async def list_admins(ctx: dc.Context):
     """Retrieve list of admins"""
@@ -80,7 +81,8 @@ async def list_admins(ctx: dc.Context):
 
     if not admin_ids:
         await ctx.message.channel.send(
-            embed=dc.StringEmbed("The admin list is empty.\nPlease add at least 1 user's user ID in config.json as the first admin.\nID should be in string.")
+            embed=dc.StringEmbed(
+                "The admin list is empty.\nPlease add at least 1 user's user ID in config.json as the first admin.\nID should be in string.")
         )
         return
 
@@ -88,10 +90,11 @@ async def list_admins(ctx: dc.Context):
     for i in admin_ids:
         admin = await ctx.bot.fetch_user(int(i))
         admin_names.append(admin.name)
-    
+
     await ctx.message.channel.send(
         embed=dc.ListEmbed("List of admins", admin_names)
     )
+
 
 @bot.intention("[list-servers]")
 async def list_servers(ctx: dc.Context):
@@ -104,3 +107,30 @@ async def list_servers(ctx: dc.Context):
     await ctx.message.channel.send(
         embed=dc.ListEmbed("伺服器列表", server_names)
     )
+
+
+@bot.intention("[run-command]")
+async def run_command(ctx: dc.Context):
+    """Run command on target server"""
+    if len(ctx.args) < 2:
+        await ctx.message.channel.send(
+            embed=dc.ErrorEmbed(
+                "Argument Error",
+                "Missing arguments",
+                "Syntax: [run-command] <server_name> <command>",
+                ctx.message
+            )
+        )
+        return
+
+    server_name = ctx.args[0]
+
+    command_args = ctx.args[1:]
+
+    for server in servers:
+        print(server.name)
+        print(server_name)
+        if server_name == server.name:
+            server.run_command(" ".join(command_args))
+
+    await ctx.message.channel.send(embed=dc.SuccessEmbed("Command ran successfully"))
