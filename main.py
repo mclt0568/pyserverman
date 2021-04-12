@@ -18,15 +18,11 @@ def main():
 
         server_obj = mc.Server(
             server_json_obj["name"], server_json_obj["script"], config, logger)
-        server_obj.start()
 
         constants.servers.append(server_obj)
 
     import intentions #to register all intentions
     bot.run(config["bot"]["token"])
-
-    for server_obj in constants.servers:
-        server_obj.join()
 
 
 if __name__ == "__main__":
