@@ -144,8 +144,9 @@ async def list_servers(ctx: dc.Context):
 @bot.intention("[help]", require_admin=False)
 async def command_help(ctx: dc.Context):
     """Show help message"""
-    embed = dc.GeneralSuccessEmbed(
-        "Intentions' Help", "Type `[intention_name] arg_1 arg_2 ... arg_n` to execute an intention")
+    embed = dc.GeneralInformationEmbed(
+        "Intentions' Help", "Type `[intention_name] arg_1 arg_2 ... arg_n` to execute an intention"
+    )
     for intention_name, intention_handler in ctx.bot.intention_handlers.items():
         embed.add_field(name=intention_name,
                         value=intention_handler.func.__doc__, inline=False)
