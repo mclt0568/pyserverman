@@ -53,4 +53,4 @@ class Bot(discord.Client):
                 await message.channel.send("權限不足")
                 return
 
-            await handler(dc.Context(self, message, raw_msg_pieces))
+            await handler(dc.Context(self, message, raw_msg_pieces[1:]))
