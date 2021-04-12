@@ -46,7 +46,7 @@ async def remove_admin(ctx: dc.Context):
         config.remove_admin(str(user.id))
     await ctx.message.channel.send(
         embed=dc.CommandSuccessListEmbed(
-            "Successfuly added user(s) to admin group",
+            "Successfuly removed user(s) to admin group",
             targets=user_names,
             list_title="User(s) removed:"
         )
