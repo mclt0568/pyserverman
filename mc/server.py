@@ -45,6 +45,5 @@ class Server(threading.Thread):
             self.logger.log("Terminated all subprocesses!")
 
     def run_command(self, command: str):
-        print("stdin")
         self.server_process.stdin.write(f"{command}\r\n".encode())
         self.server_process.stdin.flush()
