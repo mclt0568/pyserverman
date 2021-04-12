@@ -24,8 +24,7 @@ class Config:
                     "name": "",
                     "script": "",
                 }
-            ],
-            "admins": []
+            ]
         }
         self.config_filename = "config.json"
 
@@ -47,15 +46,3 @@ class Config:
         with self.config_file_lock:
             with open(self.config_filename, "w+", encoding="utf8") as config_file:
                 json.dump(self.config, config_file, indent=4)
-
-    def add_admin(self, user_id: str, save: bool = True) -> None:
-        if user_id not in self.config["admins"]:
-            self.config["admins"].append(user_id)
-        if save:
-            self.save_config()
-
-    def remove_admin(self, user_id: str, save: bool = True) -> None:
-        if user_id in self.config["admins"]:
-            self.config["admins"].remove(user_id)
-            if save:
-                self.save_config()

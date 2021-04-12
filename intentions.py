@@ -2,6 +2,7 @@ from constants import *
 import dc
 import discord
 import io
+import admins
 
 @bot.intention("[add-admin]")
 async def add_admin(ctx: dc.Context):
@@ -18,7 +19,7 @@ async def add_admin(ctx: dc.Context):
         return
     user_names = [i.name for i in ctx.message.mentions]
     for user in ctx.message.mentions:
-        config.add_admin(str(user.id))
+        admins.add_admin(admins_table, str(user.id))
     await ctx.message.channel.send(
         embed=dc.CommandSuccessListEmbed(
             "Successfuly added user(s) to admin group",
@@ -43,7 +44,7 @@ async def remove_admin(ctx: dc.Context):
         return
     user_names = [i.name for i in ctx.message.mentions]
     for user in ctx.message.mentions:
-        config.remove_admin(str(user.id))
+        admins.remove_admin(admins_table, str(user.id))
     await ctx.message.channel.send(
         embed=dc.CommandSuccessListEmbed(
             "Successfuly removed user(s) to admin group",
@@ -83,7 +84,7 @@ async def get_user_id(ctx: dc.Context):
 @bot.intention("[list-admins]", require_admin=False)
 async def list_admins(ctx: dc.Context):
     """Retrieve list of admins"""
-    admin_ids = [int(i) for i in ctx.bot.config["admins"]]
+    admin_ids = [int(i) for i in admins.get_admins()]
 
     if not admin_ids:
         await ctx.message.channel.send(
