@@ -1,27 +1,32 @@
 from constants import *
-import os
+import constants
 import mc
-import intentions
+import os
 
 
 def main():
     servers_dir_name = config["servers_dir"]
     if not os.path.isdir(servers_dir_name):
         os.makedirs(servers_dir_name)
-    servers = config["servers"]
-    server_objs = []
-    for server in servers:
-        server_name = server["name"]
+
+    server_json_objs = config["servers"]
+    for server_json_obj in server_json_objs:
+        server_name = server_json_obj["name"]
         server_dir_name = os.path.join(servers_dir_name, server_name)
         if not os.path.isdir(server_dir_name):
             os.makedirs(server_dir_name)
 
-        server_objs.append(mc.Server(server["script"]))
-    
-    for server_obj in server_objs:
-        server_obj.run()
+        server_obj = mc.Server(
+            server_json_obj["name"], server_json_obj["script"], config, logger)
+        server_obj.start()
 
+        constants.servers.append(server_obj)
+
+    import intentions
     bot.run(config["bot"]["token"])
+
+    for server_obj in constants.servers:
+        server_obj.join()
 
 
 if __name__ == "__main__":
