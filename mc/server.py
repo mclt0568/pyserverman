@@ -14,7 +14,7 @@ class Server(threading.Thread):
     script: str
     config: common.Config
     logger: logging.Logger
-    
+
     server_process: subprocess.Popen
 
     def __init__(self, name: str, script: str, config: common.Config, logger: logging.Logger) -> None:

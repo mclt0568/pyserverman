@@ -26,15 +26,17 @@ class Bot(discord.Client):
 
         self.default_guild = None
         self.default_channel = None
+
     async def initialize_default_guild_channel(self):
-        #get guild
+        # get guild
         self.default_guild = self.get_guild(self.config["bot"]["guild"])
         if self.default_guild:
             self.logger.log(f"Bound to guild: {self.default_guild}")
         else:
-            self.logger.log("Unable to find guild. (Wrong ID might be set in config.json)",level=LogLevelName.WARNING)
+            self.logger.log(
+                "Unable to find guild. (Wrong ID might be set in config.json)", level=LogLevelName.WARNING)
 
-        #get channel
+        # get channel
         channels = self.get_all_channels()
         self.default_channel = None
         for i in channels:
@@ -43,7 +45,8 @@ class Bot(discord.Client):
         if self.default_channel:
             self.logger.log(f"Bound to channel: {self.default_channel}")
         else:
-            self.logger.log("Unable to find channel. (Wrong ID might be set in config.json)\nAborting bounded guild.",level=LogLevelName.WARNING)
+            self.logger.log(
+                "Unable to find channel. (Wrong ID might be set in config.json)\nAborting bounded guild.", level=LogLevelName.WARNING)
 
     def intention(self, trigger: str, require_admin: bool = True) -> None:
         def wrapper(func: Callable):
@@ -58,7 +61,8 @@ class Bot(discord.Client):
         if self.config["bot"]["guild"] and self.config["bot"]["channel"]:
             await self.initialize_default_guild_channel()
         else:
-            self.logger.log("Default guild and channel has not set in config.json.\nIt is recommended to bind the bot to a channel", level=LogLevelName.WARNING)
+            self.logger.log(
+                "Default guild and channel has not set in config.json.\nIt is recommended to bind the bot to a channel", level=LogLevelName.WARNING)
         if self.default_channel:
             nametag = embeds.BotNametagEmbed(self)
             await nametag.init_all_fields()
@@ -99,7 +103,8 @@ class Bot(discord.Client):
             handler = self.intention_handlers[msg_pieces[0]]
             if handler.require_admin and str(message.author.id) not in admins.get_admins():
                 await message.channel.send(
-                    embed=embeds.ErrorEmbed("Permission Denied","This action or intention requires admin privilege.","Use [list-admins] to see a list of admins",message)
+                    embed=embeds.ErrorEmbed("Permission Denied", "This action or intention requires admin privilege.",
+                                            "Use [list-admins] to see a list of admins", message)
                 )
                 return
 

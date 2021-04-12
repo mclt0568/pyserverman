@@ -4,6 +4,7 @@ import discord
 import io
 import admins
 
+
 @bot.intention("[add-admin]")
 async def add_admin(ctx: dc.Context):
     """Add user(s) to the admin list"""
@@ -155,16 +156,18 @@ async def command_help(ctx: dc.Context):
         embed=embed
     )
 
+
 @bot.intention("[dump-log]", require_admin=True)
-async def dump_log(ctx:dc.Context):
+async def dump_log(ctx: dc.Context):
     """Dump the log of this bot as a file, and upload it to the text channel"""
     data = ctx.bot.logger.read_file_as_string()
     await ctx.message.channel.send(
         file=discord.File(
-            fp = io.StringIO(data),
+            fp=io.StringIO(data),
             filename="Log.txt"
         )
     )
+
 
 @bot.intention("[start-servers]")
 async def start_server(ctx: dc.context):
@@ -181,6 +184,7 @@ async def start_server(ctx: dc.context):
         return
 
     server_names = config
+
 
 @bot.intention("[run-command]")
 async def run_command(ctx: dc.Context):

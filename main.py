@@ -19,7 +19,7 @@ def main():
 
     # constants.servers.append(server_obj)
 
-    import intentions #to register all intentions
+    import intentions  # to register all intentions
     bot.run(config["bot"]["token"])
 
 
