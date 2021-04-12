@@ -125,7 +125,7 @@ class InformationListEmbed(GeneralInformationEmbed):
 class BotNametagEmbed(discord.Embed):
     def __init__(self, client:discord.Client) -> None:
         super().__init__(
-            title=f"Successful Signed In!",
+            title=f"Successfuly Signed In!",
             description="I am now available.",
             color=discord.Color.from_rgb(255, 245, 157)
         )
