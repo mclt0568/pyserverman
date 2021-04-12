@@ -36,8 +36,6 @@ class Server(threading.Thread):
                 stdout_line_bytes = self.server_process.stdout.readline()
                 if stdout_line_bytes == b"" and self.server_process.poll() is None:
                     break
-
-                print(str(stdout_line_bytes))
         except KeyboardInterrupt:
             self.logger.log("Received terminate signal!")
             self.logger.log("Terminating subprocesses . . . ")
