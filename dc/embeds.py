@@ -99,6 +99,30 @@ class CommandSuccessDictEmbed(GeneralSuccessEmbed):
             )
 
 
+class GeneralInformationEmbed(discord.Embed):
+    def __init__(self,title,description):
+        super().__init__(
+            title=title,
+            description=description,
+            color=discord.Color.from_rgb(144, 202, 249)
+        )
+
+        self.set_author(name="Information", icon_url="https://i.imgur.com/eTX8lt7.png")
+
+class InformationListEmbed(GeneralInformationEmbed):
+    def __init__(self,title:str,description:str,targets:List[str]=[],list_title:str=""):
+        super().__init__(
+            title=title,
+            description=description,
+        )
+
+        if targets:
+            self.add_field(
+                name=list_title,
+                value="\n".join([str(i) for i in targets]),
+                inline=False
+            )
+
 class BotNametagEmbed(discord.Embed):
     def __init__(self, client:discord.Client) -> None:
         super().__init__(

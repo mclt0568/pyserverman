@@ -87,9 +87,13 @@ async def list_admins(ctx: dc.Context):
 
     if not admin_ids:
         await ctx.message.channel.send(
-            embed=dc.CommandSuccessEmbed(
-                title="The admin list is empty.",
-                description="\nPlease add at least 1 user's user ID in config.json as the first admin.\nID should be in string."
+            # embed=dc.CommandSuccessEmbed(
+            #     title="The admin list is empty.",
+            #     description="\nPlease add at least 1 user's user ID in config.json as the first admin.\nID should be in string."
+            # )
+            embed = dc.InformationListEmbed(
+                title="The admin list is empty",
+                description="Please add at least 1 user's user ID in config.json as the first admin.\nID should be in string."
             )
         )
         return
@@ -100,10 +104,11 @@ async def list_admins(ctx: dc.Context):
         admin_names.append(admin.name)
     
     await ctx.message.channel.send(
-        embed=dc.CommandSuccessListEmbed(
+        embed=dc.InformationListEmbed(
+            title="",
+            description="",
             list_title="List of admins",
             targets=admin_names,
-            description=""
         )
     )
 
@@ -117,7 +122,8 @@ async def list_servers(ctx: dc.Context):
         server_names.append(server_dict["name"])
 
     await ctx.message.channel.send(
-        embed=dc.CommandSuccessListEmbed(
+        embed=dc.InformationListEmbed(
+            title="Query result(s)",
             description="",
             list_title="List of server(s):",
             targets=server_names
