@@ -155,6 +155,7 @@ async def command_help(ctx: dc.Context):
 
 @bot.intention("[dump-log]", require_admin=True)
 async def dump_log(ctx:dc.Context):
+    """Dump the log of this bot as a file, and upload it to the text channel"""
     data = ctx.bot.logger.read_file_as_string()
     await ctx.message.channel.send(
         file=discord.File(
