@@ -18,7 +18,7 @@ class Config:
                 "guild": 0,
                 "channel": 0
             },
-            "servers_dir": "",
+            "servers_dir": "servers",
             "servers": [
                 {
                     "name": "",
