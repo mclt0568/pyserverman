@@ -31,3 +31,6 @@ class Table:
             values_str = ", ".join(values)
             print(f"INSERT INTO {self.name} VALUES ({values_str});")
             self.db.execute(f"INSERT INTO {self.name} VALUES ({values_str});")
+
+    def delete(self,conditions:str) -> None:
+        self.db.execute(f"DELETE FROM {self.name} WHERE {conditions};")
