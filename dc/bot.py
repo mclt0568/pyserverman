@@ -10,19 +10,13 @@ import admins
 
 
 class Bot(discord.Client):
-    config: common.Config
-    logger: common.Logger
-
-    intention_handlers = {}
-
-    default_guild: discord.Guild
-    default_channel: discord.TextChannel
-
     def __init__(self, config: common.Config, logger: common.Logger) -> None:
         super().__init__()
 
         self.config = config
         self.logger = logger
+
+        self.intention_handlers = {}
 
         self.default_guild = None
         self.default_channel = None

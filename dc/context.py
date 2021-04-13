@@ -4,10 +4,6 @@ import dc
 
 
 class Context:
-    bot: dc.Bot
-    message: discord.Message
-    args: List[str]
-
     def __init__(self, bot: dc.Bot, message: discord.Message, args: List[str]) -> None:
         self.bot = bot
         self.message = message

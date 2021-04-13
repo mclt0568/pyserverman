@@ -3,9 +3,6 @@ import dc
 
 
 class Handler:
-    func: Callable[[dc.Context], Awaitable[None]]
-    require_admin: bool
-
     def __init__(self, func: Callable[[dc.Context], Awaitable[None]], require_admin: bool) -> None:
         self.func = func
         self.require_admin = require_admin

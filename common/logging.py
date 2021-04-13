@@ -23,17 +23,6 @@ class LogLevelName(Enum):
 
 
 class Logger:
-    log_directory: str
-    log_filename: str
-
-    message_prefix: str
-    message_suffix: str
-
-    log_levels: Dict[str, LogLevel]
-
-    log_file: IO
-    log_file_lock: threading.Lock
-
     def __init__(self) -> None:
         self.log_directory = "logs"
         self.log_filename = datetime.datetime.now().strftime("%d-%m-%Y_%H-%M-%S.log")
