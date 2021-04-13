@@ -26,8 +26,8 @@ class Logger:
     log_directory: str
     log_filename: str
 
-    line_prefix: str
-    line_suffix: str
+    message_prefix: str
+    message_suffix: str
 
     log_levels: Dict[str, LogLevel]
 
@@ -41,8 +41,8 @@ class Logger:
         if not os.path.isdir(self.log_directory):
             os.mkdir(self.log_directory)
 
-        self.prefix = "[{}][{}] "
-        self.suffix = "\n"
+        self.message_prefix = "[{}][{}] "
+        self.message_suffix = "\n"
 
         self.log_levels = {
             LogLevelName.LOG: LogLevel("LOG", "§g"),
@@ -72,17 +72,18 @@ class Logger:
 
         date_time = datetime.datetime.today().strftime("%Y/%m/%d %H:%M:%S")
 
-        file_message = self.prefix.format(date_time, log_level_tag) + message
-        console_message = self.prefix.format(
-            date_time, colorparse(log_level_color + log_level_tag + "§0")) + message
+        file_message = self.message_prefix.format(
+            date_time, log_level_tag) + message + self.message_suffix
+        console_message = self.message_prefix.format(
+            date_time, colorparse(log_level_color + log_level_tag + "§0")) + message + self.message_suffix
 
         return file_message, console_message
 
     # flush will update the log file
     # set it to false when writing frequently
-    def write_to_file(self, line: str, flush: bool = True) -> None:
+    def write_to_file(self, content: str, flush: bool = True) -> None:
         with self.log_file_lock:
-            self.log_file.write(line + "\n")
+            self.log_file.write(content)
             if flush:
                 self.flush_file()
 
@@ -109,7 +110,7 @@ class Logger:
             ]
 
         for file_message, console_message in log_messages:
-            print(console_message)
+            print(console_message, end="")
             self.write_to_file(file_message, flush=False)
 
         self.flush_file()
