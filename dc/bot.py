@@ -1,6 +1,7 @@
 from common.logging import LogLevelName
 from typing import Callable
 from dc import embeds
+from constants import *
 import dc
 import discord
 import traceback
@@ -95,7 +96,7 @@ class Bot(discord.Client):
                 f"{message.author.name}#{message.author.discriminator} executed: {raw_msg}")
 
             handler = self.intention_handlers[msg_pieces[0]]
-            if handler.require_admin and str(message.author.id) not in admins.get_admins():
+            if handler.require_admin and str(message.author.id) not in admins.get_admins(admins_table):
                 await message.channel.send(
                     embed=embeds.ErrorEmbed("Permission Denied", "This action or intention requires admin privilege.",
                                             "Use [list-admins] to see a list of admins", message)
