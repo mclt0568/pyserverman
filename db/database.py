@@ -1,6 +1,6 @@
 import sqlite3
 import threading
-from typing import Any, Iterable
+from typing import Iterable, Optional
 
 
 # READ BEFORE USING
@@ -34,7 +34,7 @@ class Database:
 
     # execute sql, fetch one row and return result
     # return None if no result
-    def query_one(self, sql: str, args: Iterable = ()) -> Any:
+    def query_one(self, sql: str, args: Iterable = ()) -> Optional[list]:
         cursor = self._new_cursor()
         cursor.execute(sql, args)
 
@@ -45,7 +45,7 @@ class Database:
 
     # execute sql, fetch {wanted_results_count} lines of rows and return results
     # return None if no results
-    def query_many(self, wanted_results_count: int, sql: str, args: Iterable = ()) -> Any:
+    def query_many(self, wanted_results_count: int, sql: str, args: Iterable = ()) -> Optional[list]:
         cursor = self._new_cursor()
         cursor.execute(sql, args)
 
@@ -58,7 +58,7 @@ class Database:
 
     # execute sql, fetch all returned rows and return the rows
     # return None if no returned rows
-    def query_all(self, sql: str, args: Iterable = ()) -> Any:
+    def query_all(self, sql: str, args: Iterable = ()) -> Optional[list]:
         cursor = self._new_cursor()
         cursor.execute(sql, args)
 
