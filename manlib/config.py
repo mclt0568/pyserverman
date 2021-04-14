@@ -5,7 +5,7 @@ import threading
 
 
 class Config:
-    def __init__(self, filename: str = "config.json") -> None:
+    def __init__(self, filename: str) -> None:
         self.config = {
             "bot": {
                 "token": "",
