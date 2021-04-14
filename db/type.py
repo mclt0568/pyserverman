@@ -12,3 +12,9 @@ type_mapping = {
     float: Type.REAL,
     str: Type.TEXT
 }
+
+type_mapping_reversed = {
+    Type.INTEGER: int,
+    Type.REAL: float,
+    Type.TEXT: str
+}
