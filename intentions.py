@@ -2,7 +2,6 @@ from constants import *
 import dc
 import discord
 import io
-import admins
 
 
 @bot.intention("[add-admin]")

@@ -6,7 +6,6 @@ import discord
 import traceback
 import common
 import shlex
-import admins
 
 
 class Bot(discord.Client):

@@ -3,7 +3,6 @@ import common
 import dc
 import mc
 import db
-import admins
 
 #initialization of Database
 database = db.Database("data.db")
