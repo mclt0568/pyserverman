@@ -1,7 +1,8 @@
 import sqlite3
 import threading
-from typing import Any, Iterable
-
+from db.type import type_mapping_reversed, Type
+from typing import Any, Dict, Iterable, List
+from .table import Table
 
 # READ BEFORE USING
 # this object is thread-safe it can be used in multiple threads simultaneously
@@ -10,9 +11,34 @@ class Database:
     def __init__(self, filename: str) -> None:
         self.__db_conn = sqlite3.connect(filename, check_same_thread=False)
         self.__db_conn_lock = threading.Lock()
+        self.__tables = {}
+        tables_schemas = self.query_all("SELECT name, sql FROM sqlite_master WHERE type='table'")
+        tables_schemas = [(i[0], self.__parse_schema(schema=i[1])) for i in tables_schemas]
+        for table_name, column_schema in tables_schemas:
+            self.__tables[table_name] = Table(
+                db=self,
+                name=table_name,
+                schema=column_schema
+            )
+
+    def __getitem__(self, key:str):
+        return self.__tables[key]
+
+    def __iter__(self):
+        for key, item in self.__tables.items():
+            yield (key, item)
 
     def __del__(self) -> None:
         self.__db_conn.close()
+
+    def __parse_schema(self=None, schema:str="") -> Dict[str,type]:
+        raw_columns = schema.split("(")[-1][:-1]
+        columns_schemas = [i.strip().split(" ") for i in raw_columns.split(",")]
+        columns_schemas = [(i[0], type_mapping_reversed[Type(i[1])]) for i in columns_schemas]
+        schemas_dict = {}
+        for column_name, type in columns_schemas:
+            schemas_dict [column_name] = type
+        return schemas_dict
 
     # create new cursor and return the new cursor
     def __new_cursor(self) -> sqlite3.Cursor:
@@ -26,6 +52,7 @@ class Database:
     # execute sql and save
     def execute(self, sql: str, args: Iterable = ()) -> None:
         cursor = self.__new_cursor()
+        print(args)
         cursor.execute(sql, args)
 
         self.save()
@@ -68,3 +95,25 @@ class Database:
 
         cursor.close()
         return results
+
+    def get_table_names(self) -> str:
+        return self.__tables.keys()
+
+    def get_table(self,name) -> Table:
+        return self[name]
+    
+    def init_table(self,name:str,schema:Dict[str, type]) -> None:
+        if name in self.__tables:
+            return
+        self.__tables[name] = Table(
+            db=self,
+            name=name,
+            schema=schema
+        )
+        self.__Tables[name].create()
+
+    def remove_table(self,name:str) -> None:
+        if " " in name:
+            return
+        if name in self.__Tables:
+            self.execute(f"DROP TABLE {name}")

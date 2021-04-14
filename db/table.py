@@ -1,14 +1,21 @@
 from typing import Dict, Iterable
-from .database import Database
 from .type import type_mapping
 
-
 class Table:
-    def __init__(self, db: Database, name: str, schema: Dict[str, type] = {}) -> None:
+    def __init__(self, db, name: str, schema: Dict[str, type] = {}) -> None:
         self.db = db
 
         self.name = name
         self.schema = schema
+
+    def fetch_rows(self):
+        return self.db.query_all(f"SELECT * FROM {self.name}")
+    
+    def fetch_column(self,column_name):
+        result = self.db.query_all(f"SELECT {column_name} FROM {self.name}")
+        if not result:
+            return []
+        return [i[0] for i in result]
 
     def exists(self) -> bool:
         return self.db.query_one(f"SELECT name FROM sqlite_master WHERE type='table' AND name='{self.name}';") != None
