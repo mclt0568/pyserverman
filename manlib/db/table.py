@@ -1,10 +1,11 @@
 from typing import Dict, Iterable
 
 from .type import type_mapping
+from .database import Database
 
 
 class Table:
-    def __init__(self, db, name: str, schema: Dict[str, type] = {}) -> None:
+    def __init__(self, db: Database, name: str, schema: Dict[str, type] = {}) -> None:
         self.db = db
 
         self.name = name
