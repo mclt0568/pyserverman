@@ -1,15 +1,14 @@
-from common import logging
-from dc import embeds
 import constants
 import subprocess
 import shlex
-import common
 import os
 import threading
 
+import manlib
+
 
 class Server(threading.Thread):
-    def __init__(self, name: str, script: str, config: common.Config, logger: logging.Logger) -> None:
+    def __init__(self, name: str, script: str, config: manlib.Config, logger: manlib.Logger) -> None:
         super().__init__(daemon=True)
 
         self.name = name
@@ -33,7 +32,7 @@ class Server(threading.Thread):
                 if constants.bot.default_channel:
                     constants.bot.loop.create_task(
                         constants.bot.default_channel.send(
-                            embed=embeds.GeneralInformationEmbed(
+                            embed=manlib.dc.GeneralInformationEmbed(
                                 title="Server has exitted",
                                 description=f"The following server: {self.name} has exitted\nThis might have caused by an in-game stop command or the server has crashed.\nYou can choose to dump the log before next execution"
                             )
