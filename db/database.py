@@ -13,13 +13,14 @@ class Database:
         self.__db_conn_lock = threading.Lock()
         self.__tables = {}
         tables_schemas = self.query_all("SELECT name, sql FROM sqlite_master WHERE type='table'")
-        tables_schemas = [(i[0], self.__parse_schema(schema=i[1])) for i in tables_schemas]
-        for table_name, column_schema in tables_schemas:
-            self.__tables[table_name] = Table(
-                db=self,
-                name=table_name,
-                schema=column_schema
-            )
+        if tables_schemas:
+            tables_schemas = [(i[0], self.__parse_schema(schema=i[1])) for i in tables_schemas]
+            for table_name, column_schema in tables_schemas:
+                self.__tables[table_name] = Table(
+                    db=self,
+                    name=table_name,
+                    schema=column_schema
+                )
 
     def __getitem__(self, key:str):
         return self.__tables[key]
@@ -52,7 +53,6 @@ class Database:
     # execute sql and save
     def execute(self, sql: str, args: Iterable = ()) -> None:
         cursor = self.__new_cursor()
-        print(args)
         cursor.execute(sql, args)
 
         self.save()
@@ -110,7 +110,7 @@ class Database:
             name=name,
             schema=schema
         )
-        self.__Tables[name].create()
+        self.__tables[name].create()
 
     def remove_table(self,name:str) -> None:
         if " " in name:
