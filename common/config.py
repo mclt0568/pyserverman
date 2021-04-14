@@ -5,12 +5,6 @@ import threading
 
 
 class Config:
-    config: Dict[str, Any]
-    config_filename: str
-
-    # config_file: IO
-    config_file_lock: threading.Lock
-
     def __init__(self) -> None:
         self.config = {
             "bot": {

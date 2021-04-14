@@ -6,17 +6,9 @@ import shlex
 import common
 import os
 import threading
-import asyncio
 
 
 class Server(threading.Thread):
-    name: str
-    script: str
-    config: common.Config
-    logger: logging.Logger
-
-    server_process: subprocess.Popen
-
     def __init__(self, name: str, script: str, config: common.Config, logger: logging.Logger) -> None:
         super().__init__(daemon=True)
 

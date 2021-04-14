@@ -10,24 +10,18 @@ import shlex
 
 
 class Bot(discord.Client):
-    config: common.Config
-    logger: common.Logger
-
-    intention_handlers = {}
-
-    default_guild: discord.Guild
-    default_channel: discord.TextChannel
-
-    def __init__(self, config: common.Config, logger: common.Logger):
+    def __init__(self, config: common.Config, logger: common.Logger) -> None:
         super().__init__()
 
         self.config = config
         self.logger = logger
 
+        self.intention_handlers = {}
+
         self.default_guild = None
         self.default_channel = None
 
-    async def initialize_default_guild_channel(self):
+    async def initialize_default_guild_channel(self) -> None:
         # get guild
         self.default_guild = self.get_guild(self.config["bot"]["guild"])
         if self.default_guild:
@@ -53,7 +47,7 @@ class Bot(discord.Client):
             self.register_intention(trigger, func, require_admin)
         return wrapper
 
-    def register_intention(self, trigger: str, handler: Callable, require_admin: bool):
+    def register_intention(self, trigger: str, handler: Callable, require_admin: bool) -> None:
         self.intention_handlers[trigger] = dc.Handler(handler, require_admin)
 
     async def on_ready(self):
@@ -83,10 +77,10 @@ class Bot(discord.Client):
                 )
             )
 
-    def is_intention(self, raw_intention: str):
+    def is_intention(self, raw_intention: str) -> bool:
         return raw_intention[0] == "[" and raw_intention[-1] == "]" and raw_intention in self.intention_handlers
 
-    async def on_message(self, message: discord.Message) -> None:
+    async def on_message(self, message: discord.Message):
         if self.default_channel and message.channel.id != self.default_channel.id:
             return
         raw_msg = message.content.strip()
