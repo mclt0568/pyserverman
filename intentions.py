@@ -1,4 +1,5 @@
 from constants import *
+from app import admin
 import dc
 import discord
 import io
@@ -19,14 +20,15 @@ async def add_admin(ctx: dc.Context):
         return
     user_names = [i.name for i in ctx.message.mentions]
     for user in ctx.message.mentions:
-        admins.add_admin(admins_table, str(user.id))
-    await ctx.message.channel.send(
-        embed=dc.CommandSuccessListEmbed(
-            "Successfuly added user(s) to admin group",
-            targets=user_names,
-            list_title="User(s) added:"
+        result = admin.add_admin(str(user.id))
+    if result:
+        await ctx.message.channel.send(
+            embed=dc.CommandSuccessListEmbed(
+                "Successfuly added user(s) to admin group",
+                targets=user_names,
+                list_title="User(s) added:"
+            )
         )
-    )
 
 
 @bot.intention("[remove-admin]")
@@ -44,7 +46,7 @@ async def remove_admin(ctx: dc.Context):
         return
     user_names = [i.name for i in ctx.message.mentions]
     for user in ctx.message.mentions:
-        admins.remove_admin(admins_table, str(user.id))
+        admin.remove_admin(str(user.id))
     await ctx.message.channel.send(
         embed=dc.CommandSuccessListEmbed(
             "Successfuly removed user(s) to admin group",
@@ -57,7 +59,7 @@ async def remove_admin(ctx: dc.Context):
 @bot.intention("[list-admins]", require_admin=False)
 async def list_admins(ctx: dc.Context):
     """Retrieve list of admins"""
-    admin_ids = [int(i) for i in admins.get_admins()]
+    admin_ids = [int(i) for i in admin.get_admins()]
 
     if not admin_ids:
         await ctx.message.channel.send(
