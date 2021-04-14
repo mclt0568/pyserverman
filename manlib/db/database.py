@@ -13,11 +13,13 @@ class Database:
     def __init__(self, filename: str) -> None:
         self._db_conn = sqlite3.connect(filename, check_same_thread=False)
         self._db_conn_lock = threading.Lock()
+
         self._tables = {}
+
         tables_schemas = self.query_all(
-            "SELECT name, sql FROM sqlite_master WHERE type='table'")
+            "SELECT name, sql FROM sqlite_master WHERE type='table';")
         if tables_schemas:
-            tables_schemas = [(i[0], self.__parse_schema(schema=i[1]))
+            tables_schemas = [(i[0], self.parse_schema(i[1]))
                               for i in tables_schemas]
             for table_name, column_schema in tables_schemas:
                 self._tables[table_name] = Table(
@@ -36,7 +38,8 @@ class Database:
     def __del__(self) -> None:
         self._db_conn.close()
 
-    def __parse_schema(self=None, schema: str = "") -> Dict[str, type]:
+    @staticmethod
+    def parse_schema(schema: str = "") -> Dict[str, type]:
         raw_columns = schema.split("(")[-1][:-1]
         columns_schemas = [i.strip().split(" ")
                            for i in raw_columns.split(",")]
