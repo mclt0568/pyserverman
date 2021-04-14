@@ -54,33 +54,6 @@ async def remove_admin(ctx: dc.Context):
     )
 
 
-@bot.intention("[get-user-id]", require_admin=False)
-async def get_user_id(ctx: dc.Context):
-    """Retrieve the user id for user(s)"""
-    if not ctx.message.mentions:
-        await ctx.message.channel.send(
-            embed=dc.ErrorEmbed(
-                "Argument Error",
-                "No mentions found.",
-                "Syntax: [get-user-id] @user_1 @user_2 .. @user_n",
-                ctx.message
-            )
-        )
-        return
-
-    username_id_s = {}
-
-    for user in ctx.message.mentions:
-        username_id_s[user.name] = str(user.id)
-
-    await ctx.message.channel.send(
-        embed=dc.CommandSuccessDictEmbed(
-            description="",
-            targets=username_id_s,
-        )
-    )
-
-
 @bot.intention("[list-admins]", require_admin=False)
 async def list_admins(ctx: dc.Context):
     """Retrieve list of admins"""
