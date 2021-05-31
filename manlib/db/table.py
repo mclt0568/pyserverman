@@ -1,8 +1,11 @@
 from typing import Dict, Iterable
+
 from .type import type_mapping
+from .database import Database
+
 
 class Table:
-    def __init__(self, db, name: str, schema: Dict[str, type] = {}) -> None:
+    def __init__(self, db: Database, name: str, schema: Dict[str, type] = {}) -> None:
         self.db = db
 
         self.name = name
@@ -10,8 +13,8 @@ class Table:
 
     def fetch_rows(self):
         return self.db.query_all(f"SELECT * FROM {self.name}")
-    
-    def fetch_column(self,column_name):
+
+    def fetch_column(self, column_name):
         result = self.db.query_all(f"SELECT {column_name} FROM {self.name}")
         if not result:
             return []
@@ -39,5 +42,5 @@ class Table:
             print(f"INSERT INTO {self.name} VALUES ({values_str});")
             self.db.execute(f"INSERT INTO {self.name} VALUES ({values_str});")
 
-    def delete(self,conditions:str) -> None:
+    def delete(self, conditions: str) -> None:
         self.db.execute(f"DELETE FROM {self.name} WHERE {conditions};")

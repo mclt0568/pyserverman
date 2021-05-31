@@ -1,16 +1,16 @@
-from common.logging import LogLevelName
 from typing import Callable
-from dc import embeds
-from app import admin
-import dc
 import discord
 import traceback
-import common
 import shlex
+
+from .handler import Handler
+from .embeds import BotNametagEmbed, ErrorEmbed, ExceptionEmbed
+from .context import Context
+import manlib
 
 
 class Bot(discord.Client):
-    def __init__(self, config: common.Config, logger: common.Logger) -> None:
+    def __init__(self, config: manlib.Config, logger: manlib.Logger) -> None:
         super().__init__()
 
         self.config = config
@@ -28,7 +28,7 @@ class Bot(discord.Client):
             self.logger.log(f"Bound to guild: {self.default_guild}")
         else:
             self.logger.log(
-                "Unable to find guild. (Wrong ID might be set in config.json)", level=LogLevelName.WARNING)
+                "Unable to find guild. (Wrong ID might be set in config.json)", level=manlib.LogLevelName.WARNING)
 
         # get channel
         channels = self.get_all_channels()
@@ -40,7 +40,7 @@ class Bot(discord.Client):
             self.logger.log(f"Bound to channel: {self.default_channel}")
         else:
             self.logger.log(
-                "Unable to find channel. (Wrong ID might be set in config.json)\nAborting bounded guild.", level=LogLevelName.WARNING)
+                "Unable to find channel. (Wrong ID might be set in config.json)\nAborting bounded guild.", level=manlib.LogLevelName.WARNING)
 
     def intention(self, trigger: str, require_admin: bool = True) -> None:
         def wrapper(func: Callable):
@@ -48,7 +48,7 @@ class Bot(discord.Client):
         return wrapper
 
     def register_intention(self, trigger: str, handler: Callable, require_admin: bool) -> None:
-        self.intention_handlers[trigger] = dc.Handler(handler, require_admin)
+        self.intention_handlers[trigger] = Handler(handler, require_admin)
 
     async def on_ready(self):
         self.logger.log(f"Signed in as {self.user}")
@@ -56,9 +56,9 @@ class Bot(discord.Client):
             await self.initialize_default_guild_channel()
         else:
             self.logger.log(
-                "Default guild and channel has not set in config.json.\nIt is recommended to bind the bot to a channel", level=LogLevelName.WARNING)
+                "Default guild and channel has not set in config.json.\nIt is recommended to bind the bot to a channel", level=manlib.LogLevelName.WARNING)
         if self.default_channel:
-            nametag = embeds.BotNametagEmbed(self)
+            nametag = BotNametagEmbed(self)
             await nametag.init_all_fields()
             await self.default_channel.send(
                 embed=nametag
@@ -67,10 +67,10 @@ class Bot(discord.Client):
     async def on_error(self, event, *args, **kwargs):
         traceback_message = traceback.format_exc()
         self.logger.log(traceback_message,
-                        level=common.LogLevelName.EXCEPTION)
+                        level=manlib.LogLevelName.EXCEPTION)
         if self.default_channel:
             await self.default_channel.send(
-                embed=embeds.ExceptionEmbed(
+                embed=ExceptionEmbed(
                     traceback_message.split("\n")[-2],
                     event,
                     traceback_message
@@ -97,9 +97,9 @@ class Bot(discord.Client):
             handler = self.intention_handlers[msg_pieces[0]]
             if handler.require_admin and not admin.is_admin(message.author.id):
                 await message.channel.send(
-                    embed=embeds.ErrorEmbed("Permission Denied", "This action or intention requires admin privilege.",
-                                            "Use [list-admins] to see a list of admins", message)
+                    embed=ErrorEmbed("Permission Denied", "This action or intention requires admin privilege.",
+                                     "Use [list-admins] to see a list of admins", message)
                 )
                 return
 
-            await handler(dc.Context(self, message, raw_msg_pieces[1:]))
+            await handler(Context(self, message, raw_msg_pieces[1:]))
