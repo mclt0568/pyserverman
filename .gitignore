@@ -2,6 +2,7 @@ logs/
 config.json
 tester.py
 env/
+venv/
 .vscode/
 __pycache__/
 servers/
