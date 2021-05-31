@@ -1,7 +1,7 @@
 from typing import Dict, Iterable
 
-from .type import type_mapping
 from .database import Database
+from .type import type_mapping
 
 
 class Table:

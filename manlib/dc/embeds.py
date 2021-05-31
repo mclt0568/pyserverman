@@ -1,6 +1,7 @@
-from typing import List
-import discord
 import datetime
+from typing import List
+
+import discord
 
 
 class GeneralErrorEmbed(discord.Embed):

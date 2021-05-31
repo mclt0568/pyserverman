@@ -1,9 +1,10 @@
-from typing import Any, IO, List, Tuple
-from ColorStr import parse as colorparse
-from enum import Enum
-from datetime import datetime
 import os
 import threading
+from datetime import datetime
+from enum import Enum
+from typing import Any, IO, List, Tuple
+
+from ColorStr import parse as colorparse
 
 
 class LogLevel:

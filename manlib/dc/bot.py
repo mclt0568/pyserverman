@@ -1,12 +1,13 @@
-from typing import Callable
-import discord
-import traceback
 import shlex
+import traceback
+from typing import Callable
 
-from .handler import Handler
-from .embeds import BotNametagEmbed, ErrorEmbed, ExceptionEmbed
-from .context import Context
+import discord
+
 import manlib
+from .context import Context
+from .embeds import BotNametagEmbed, ErrorEmbed, ExceptionEmbed
+from .handler import Handler
 
 
 class Bot(discord.Client):
@@ -40,11 +41,13 @@ class Bot(discord.Client):
             self.logger.log(f"Bound to channel: {self.default_channel}")
         else:
             self.logger.log(
-                "Unable to find channel. (Wrong ID might be set in config.json)\nAborting bounded guild.", level=manlib.LogLevelName.WARNING)
+                "Unable to find channel. (Wrong ID might be set in config.json)\nAborting bounded guild.",
+                level=manlib.LogLevelName.WARNING)
 
     def intention(self, trigger: str, require_admin: bool = True) -> None:
         def wrapper(func: Callable):
             self.register_intention(trigger, func, require_admin)
+
         return wrapper
 
     def register_intention(self, trigger: str, handler: Callable, require_admin: bool) -> None:
@@ -56,7 +59,8 @@ class Bot(discord.Client):
             await self.initialize_default_guild_channel()
         else:
             self.logger.log(
-                "Default guild and channel has not set in config.json.\nIt is recommended to bind the bot to a channel", level=manlib.LogLevelName.WARNING)
+                "Default guild and channel has not set in config.json.\nIt is recommended to bind the bot to a channel",
+                level=manlib.LogLevelName.WARNING)
         if self.default_channel:
             nametag = BotNametagEmbed(self)
             await nametag.init_all_fields()

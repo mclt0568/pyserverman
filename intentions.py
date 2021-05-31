@@ -1,8 +1,10 @@
-from constants import *
-from app import admin
+import io
+
 import dc
 import discord
-import io
+
+from app import admin
+from constants import *
 
 
 @bot.intention("[add-admin]")
@@ -104,7 +106,7 @@ async def list_servers(ctx: dc.Context):
                 temp_server = server
         server_objects[server_name] = temp_server
     messages = [
-        f"[{'Running' if j.is_running() else 'Idel'}] "+str(i)
+        f"[{'Running' if j.is_running() else 'Idel'}] " + str(i)
         for i, j in server_objects.items()
     ]
     await ctx.message.channel.send(

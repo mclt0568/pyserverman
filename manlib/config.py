@@ -1,7 +1,7 @@
-from typing import Any
 import json
 import os
 import threading
+from typing import Any
 
 
 class Config:

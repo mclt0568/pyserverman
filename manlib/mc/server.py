@@ -1,9 +1,9 @@
-import constants
-import subprocess
-import shlex
 import os
+import shlex
+import subprocess
 import threading
 
+import constants
 import manlib
 
 

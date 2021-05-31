@@ -1,9 +1,9 @@
-from typing import Dict, Iterable, Optional
 import sqlite3
 import threading
+from typing import Dict, Iterable, Optional
 
-from .type import Type, type_mapping_reversed
 from .table import Table
+from .type import Type, type_mapping_reversed
 
 
 # READ BEFORE USING
