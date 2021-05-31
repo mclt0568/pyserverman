@@ -34,7 +34,9 @@ class Server(threading.Thread):
                         constants.bot.default_channel.send(
                             embed=manlib.dc.GeneralInformationEmbed(
                                 title="Server has exitted",
-                                description=f"The following server: {self.name} has exitted\nThis might have caused by an in-game stop command or the server has crashed.\nYou can choose to dump the log before next execution"
+                                description=f"The following server: {self.name} has exitted\nThis might have caused "
+                                            f"by an in-game stop command or the server has crashed.\nYou can choose "
+                                            f"to dump the log before next execution "
                             )
                         )
                     )
@@ -49,7 +51,7 @@ class Server(threading.Thread):
         if not self.server_process:
             return False
         stdout_line_bytes = self.server_process.stdout.readline()
-        return stdout_line_bytes != b"" or self.server_process.poll() == None
+        return stdout_line_bytes != b"" or self.server_process.poll() is None
 
     def terminate(self):
         self.logger.log(f"Server terminated manually: {self.name}")

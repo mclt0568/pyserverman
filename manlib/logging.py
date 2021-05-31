@@ -35,7 +35,7 @@ class Logger:
         self.output_streams_lock = threading.Lock()
 
         self.log_directory = "logs"
-        self.log_filename = datetime.datetime.now().strftime("%d-%m-%Y_%H-%M-%S.log")
+        self.log_filename = datetime.now().strftime("%d-%m-%Y_%H-%M-%S.log")
 
         if not os.path.isdir(self.log_directory):
             os.mkdir(self.log_directory)

@@ -20,6 +20,8 @@ async def add_admin(ctx: dc.Context):
             )
         )
         return
+
+    result = False
     user_names = [i.name for i in ctx.message.mentions]
     for user in ctx.message.mentions:
         result = admin.add_admin(str(user.id))
@@ -67,19 +69,21 @@ async def list_admins(ctx: dc.Context):
         await ctx.message.channel.send(
             # embed=dc.CommandSuccessEmbed(
             #     title="The admin list is empty.",
-            #     description="\nPlease add at least 1 user's user ID in config.json as the first admin.\nID should be in string."
+            #     description="\nPlease add at least 1 user's user ID in config.json as the first admin.\nID should be "
+            #                 "in string."
             # )
             embed=dc.InformationListEmbed(
                 title="The admin list is empty",
-                description="Please add at least 1 user's user ID in config.json as the first admin.\nID should be in string."
+                description="Please add at least 1 user's user ID in config.json as the first admin.\nID should be in "
+                            "string. "
             )
         )
         return
 
     admin_names = []
     for i in admin_ids:
-        admin = await ctx.bot.fetch_user(int(i))
-        admin_names.append(admin.name)
+        admin_user = await ctx.bot.fetch_user(int(i))
+        admin_names.append(admin_user.name)
 
     await ctx.message.channel.send(
         embed=dc.InformationListEmbed(
@@ -158,8 +162,6 @@ async def start_server(ctx: dc.context):
             )
         )
         return
-
-    server_names = config
 
 
 @bot.intention("[run-command]")

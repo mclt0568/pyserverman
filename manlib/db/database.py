@@ -33,7 +33,7 @@ class Database:
 
     def __iter__(self):
         for key, item in self._tables.items():
-            yield (key, item)
+            yield key, item
 
     def __del__(self) -> None:
         self._db_conn.close()
@@ -46,8 +46,8 @@ class Database:
         columns_schemas = [(i[0], type_mapping_reversed[Type(i[1])])
                            for i in columns_schemas]
         schemas_dict = {}
-        for column_name, type in columns_schemas:
-            schemas_dict[column_name] = type
+        for column_name, column_type in columns_schemas:
+            schemas_dict[column_name] = column_type
         return schemas_dict
 
     # create new cursor and return the new cursor
@@ -86,7 +86,7 @@ class Database:
         cursor.execute(sql, args)
 
         results = cursor.fetchmany(wanted_results_count)
-        if results == []:
+        if not results:
             results = None
 
         cursor.close()
@@ -99,13 +99,13 @@ class Database:
         cursor.execute(sql, args)
 
         results = cursor.fetchall()
-        if results == []:
+        if not results:
             results = None
 
         cursor.close()
         return results
 
-    def get_table_names(self) -> str:
+    def get_table_names(self):
         return self._tables.keys()
 
     def get_table(self, name) -> Table:

@@ -1,5 +1,5 @@
 import datetime
-from typing import List
+from typing import List, Dict
 
 import discord
 
@@ -41,7 +41,8 @@ class ExceptionEmbed(GeneralErrorEmbed):
     def __init__(self, exception_name: str, event: str, full_traceback: str) -> None:
         super().__init__(
             title=f"{exception_name}",
-            description=f"Unexpected Exception has occurred during {event}\nPlease report this to the admin with the traceback.",
+            description=f"Unexpected Exception has occurred during {event}\nPlease report this to the admin with the "
+                        f"traceback.",
         )
         self.add_field(
             name="Full Traceback",
@@ -91,7 +92,7 @@ class CommandSuccessListEmbed(GeneralSuccessEmbed):
 
 
 class CommandSuccessDictEmbed(GeneralSuccessEmbed):
-    def __init__(self, description: str, targets: List[str] = None) -> None:
+    def __init__(self, description: str, targets: Dict = None) -> None:
         super().__init__(
             title=f"Command Result(s)",
             description=description,
@@ -120,7 +121,7 @@ class GeneralInformationEmbed(discord.Embed):
 
 
 class InformationListEmbed(GeneralInformationEmbed):
-    def __init__(self, title: str, description: str, targets: List[str] = [], list_title: str = ""):
+    def __init__(self, title: str, description: str, targets: List[str] = None, list_title: str = ""):
         super().__init__(
             title=title,
             description=description,

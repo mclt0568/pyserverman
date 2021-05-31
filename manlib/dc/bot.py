@@ -44,7 +44,7 @@ class Bot(discord.Client):
                 "Unable to find channel. (Wrong ID might be set in config.json)\nAborting bounded guild.",
                 level=manlib.LogLevelName.WARNING)
 
-    def intention(self, trigger: str, require_admin: bool = True) -> None:
+    def intention(self, trigger: str, require_admin: bool = True):
         def wrapper(func: Callable):
             self.register_intention(trigger, func, require_admin)
 
